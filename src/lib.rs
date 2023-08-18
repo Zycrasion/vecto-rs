@@ -54,7 +54,7 @@ impl Debug for Vec2
 impl Display for Vec2
 {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "x: {}, y: {}", self.0, self.1)
+        write!(f, "(x: {}, y: {})", self.0, self.1)
     }
 }
 
