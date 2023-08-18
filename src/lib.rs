@@ -1,4 +1,4 @@
-use std::fmt::Debug;
+use std::fmt::{Debug, Display};
 
 #[derive(Clone, Copy)]
 pub struct Vec2(pub f32, pub f32);
@@ -32,12 +32,29 @@ impl Vec2
     {
         self.clone() / self.magnitude()
     }
+
+    pub fn x<T : TryFrom<f32> >(&self) -> T where <T as TryFrom<f32>>::Error: Debug
+    {
+        self.0.try_into().unwrap()
+    }
+
+    pub fn y<T : TryFrom<f32> >(&self) -> T where <T as TryFrom<f32>>::Error: Debug
+    {
+        self.1.try_into().unwrap()
+    }
 }
 
 impl Debug for Vec2
 {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.debug_tuple("Vec2").field(&self.0).field(&self.1).finish()
+    }
+}
+
+impl Display for Vec2
+{
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "x: {}, y: {}", self.0, self.1)
     }
 }
 
