@@ -17,4 +17,11 @@ fn quadtree_simple()
     {
         println!("{}: {}", c.0, c.1);
     }
+
+    for i in 0..1000
+    {
+        tree.remove(Vec2((i % 500) as f32, (i % 500) as f32));
+    }
+
+    tree.prune();
 }
