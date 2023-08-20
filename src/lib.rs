@@ -136,3 +136,10 @@ impl From<(f32, f32)> for Vec2
         Self(value.0, value.1)
     }
 }
+
+impl Into<(f32, f32)> for Vec2
+{
+    fn into(self) -> (f32, f32) {
+        (self.0, self.1)
+    }
+}
