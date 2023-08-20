@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use crate::{Vec2, bounding_box::AABB};
 
-pub type QuadValue<T> = (Vec2, T);
+pub type QuadValue<T> = Box<(Vec2, T)>;
 
 pub struct QuadTree<T>
 {
@@ -17,13 +17,13 @@ pub struct QuadTree<T>
 
 impl<T: Clone> QuadTree<T>
 {
-    pub fn new(x : f32, y : f32, w : f32, h : f32, max_values: usize) -> Self
+    pub fn new<N: Into<f32>>(x : N, y : N, w : N, h : N, max_values: usize) -> Self
     {
         assert!(max_values > 0);
 
         QuadTree
         {
-            bb : AABB { x, y, w, h },
+            bb : AABB { x:x.into(), y:y.into(), w:w.into(), h:h.into() },
             values: Vec::new(),
             tr: None,
             tl: None,
@@ -86,7 +86,7 @@ impl<T: Clone> QuadTree<T>
     {
         if self.is_leaf()
         {
-            self.values.push((p, v));
+            self.values.push(Box::new((p, v)));
 
             if self.values.len() > self.max_values
             {
@@ -116,6 +116,6 @@ impl<T: Clone> QuadTree<T>
 
     fn is_leaf(&self) -> bool
     {
-        return self.tr.is_some()
+        return self.tr.is_none()
     }
 }
