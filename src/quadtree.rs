@@ -1,5 +1,3 @@
-use std::rc::Rc;
-
 use crate::{Vec2, bounding_box::AABB};
 
 pub type QuadValue<T> = Box<(Vec2, T)>;
