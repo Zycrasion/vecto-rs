@@ -1,6 +1,6 @@
 use std::fmt::{Debug, Display};
 
-#[derive(Clone, Copy, PartialEq, PartialOrd)]
+#[derive(Clone, Copy)]
 pub struct Vec2(pub f32, pub f32);
 
 impl Vec2
@@ -41,6 +41,33 @@ impl Vec2
     pub fn y<T : TryFrom<f32> >(&self) -> T where <T as TryFrom<f32>>::Error: Debug
     {
         self.1.try_into().unwrap()
+    }
+}
+
+impl PartialEq for Vec2
+{
+    fn eq(&self, other: &Self) -> bool {
+        self.0 == other.0 && self.1 == other.1
+    }
+}
+
+impl PartialOrd for Vec2
+{
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        match self.0.partial_cmp(&other.0) {
+            Some(ord) => 
+            {
+                if let Some(c) = self.1.partial_cmp(&other.1)
+                {
+                    if c == ord
+                    {
+                        return Some(c);
+                    }
+                }
+            },
+            _ => {}
+        }
+        None   
     }
 }
 
