@@ -1,6 +1,9 @@
 mod vec2;
 pub use vec2::Vec2;
 
+mod vec3;
+pub use vec3::Vec3;
+
 mod bounding_box;
 pub use bounding_box::AABB;
 
