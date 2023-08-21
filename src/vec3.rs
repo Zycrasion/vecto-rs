@@ -1,4 +1,4 @@
-use std::{fmt::{Debug, Display}, default};
+use std::fmt::{Debug, Display};
 
 #[derive(Clone, Copy)]
 pub struct Vec3(pub f32, pub f32, pub f32);
