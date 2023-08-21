@@ -23,4 +23,10 @@ impl AABB
         // I love my vector class
         return p >= self.start && p <= self.start + self.size;
     }
+
+    pub fn intersection(&self, o : AABB) -> bool
+    {
+        return o.point_inside(self.start) || self.point_inside(o.start)
+         ||  o.point_inside(self.start + self.size) || self.point_inside(o.start + o.size)
+    }
 }
