@@ -44,6 +44,13 @@ impl Vec2
     }
 }
 
+impl Default for Vec2
+{
+    fn default() -> Self {
+        Self(Default::default(), Default::default())
+    }
+}
+
 impl Debug for Vec2
 {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
