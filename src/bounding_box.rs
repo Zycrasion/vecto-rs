@@ -20,7 +20,6 @@ impl AABB
 
     pub fn point_inside(&self, p : Vec2) -> bool
     {
-        // I love my vector class
         return p >= self.start && p <= self.start + self.size;
     }
 
