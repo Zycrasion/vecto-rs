@@ -13,3 +13,6 @@ In order to use this Library use this command.
 ```bash
 cargo add --git https://github.com/Zycrasion/vecto-rs/
 ```
+
+## Version
+This library is currently pre 1.0.0, therefore many things may change without any warnings. I might change any public api without backwards compatibility.
