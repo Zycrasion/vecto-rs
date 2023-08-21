@@ -3,16 +3,29 @@ use crate::Vec2;
 #[derive(Clone, Copy, Default, PartialEq)]
 pub struct AABB
 {
-    pub x : f32,
-    pub y : f32,
-    pub w : f32,
-    pub h : f32,
+    pub start : Vec2,
+    pub size : Vec2
 }
 
 impl AABB
 {
+    pub fn new(start : Vec2, size : Vec2) -> Self
+    {
+        AABB
+        {
+            start,
+            size
+        }
+    }
+
     pub fn point_inside(&self, p : Vec2) -> bool
     {
-        return (p.0 >= self.x && p.0 <= self.x + self.w) && (p.1 >= self.y && p.1 <= self.y + self.h);
+        return p >= self.start && p <= self.start + self.size;
+    }
+
+    pub fn intersection(&self, o : AABB) -> bool
+    {
+        return o.point_inside(self.start) || self.point_inside(o.start)
+         ||  o.point_inside(self.start + self.size) || self.point_inside(o.start + o.size)
     }
 }

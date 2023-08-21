@@ -15,13 +15,13 @@ pub struct QuadTree<T>
 
 impl<T: Clone> QuadTree<T>
 {
-    pub fn new<N: Into<f32>>(x : N, y : N, w : N, h : N, max_values: usize) -> Self
+    pub fn new(x : f32, y : f32, w : f32, h : f32, max_values: usize) -> Self
     {
         assert!(max_values > 0);
 
         QuadTree
         {
-            bb : AABB { x:x.into(), y:y.into(), w:w.into(), h:h.into() },
+            bb : AABB::new(Vec2(x, y), Vec2(w, h)),
             values: Vec::new(),
             tr: None,
             tl: None,
@@ -31,13 +31,18 @@ impl<T: Clone> QuadTree<T>
         }
     }
 
+    fn from_bb(start : Vec2, size : Vec2, max_values: usize) -> Self
+    {
+        QuadTree::new(start.0, start.1, size.0, size.1, max_values)
+    }
+
     fn subdivide(&mut self)
     {
-        self.tl = Some(Box::new(QuadTree::new(self.bb.x                  , self.bb.y                  , self.bb.w / 2.0, self.bb.h / 2.0, self.max_values)));
-        self.tr = Some(Box::new(QuadTree::new(self.bb.x + self.bb.w / 2.0, self.bb.y                  , self.bb.w / 2.0, self.bb.h / 2.0, self.max_values)));
-        self.bl = Some(Box::new(QuadTree::new(self.bb.x                  , self.bb.y + self.bb.h / 2.0, self.bb.w / 2.0, self.bb.h / 2.0, self.max_values)));
-        self.br = Some(Box::new(QuadTree::new(self.bb.x + self.bb.w / 2.0, self.bb.y + self.bb.h / 2.0, self.bb.w / 2.0, self.bb.h / 2.0, self.max_values)));
-        
+        self.tl = Some(Box::new(QuadTree::from_bb(self.bb.start, self.bb.size / 2.0, self.max_values)));
+        self.tr = Some(Box::new(QuadTree::from_bb(self.bb.start + Vec2(self.bb.size.0/2.0, 0.0), self.bb.size / 2.0, self.max_values)));
+        self.bl = Some(Box::new(QuadTree::from_bb(self.bb.start + Vec2(0.0,self.bb.size.1/2.0), self.bb.size / 2.0, self.max_values)));
+        self.br = Some(Box::new(QuadTree::from_bb(self.bb.start + self.bb.size / 2.0, self.bb.size / 2.0, self.max_values)));
+   
         let values : Vec<_> = self.values.drain(0..self.values.len()).collect();
         for v in &values
         {
