@@ -24,7 +24,7 @@ impl<T: Clone> QuadTree<T>
 
         QuadTree
         {
-            bb : AABB::new(Vec2(x - border_size / 2.0, y - border_size / 2.0), Vec2(w + border_size / 2.0, h + border_size / 2.0)),
+            bb : AABB::new(Vec2(x - border_size / 2.0, y - border_size / 2.0), Vec2(w + border_size, h + border_size)),
             values: Vec::new(),
             tr: None,
             tl: None,
