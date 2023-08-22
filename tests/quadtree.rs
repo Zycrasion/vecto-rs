@@ -3,7 +3,7 @@ use vecto_rs::{QuadTree, Vec2};
 #[test]
 fn quadtree_simple()
 {
-    let mut tree : QuadTree<bool> = QuadTree::new(0.0, 0.0, 500.0, 500.0, 80);
+    let mut tree : QuadTree<bool> = QuadTree::new(0.0, 0.0, 500.0, 500.0, 80, 0.0);
     
     for i in 0..10_000
     {

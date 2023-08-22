@@ -7,6 +7,7 @@ pub struct QuadTree<T>
     bb : AABB,
     max_values : usize,
     values : Vec<QuadValue<T>>,
+    border_size : f32,
     tr : Option<Box<QuadTree<T>>>,
     tl : Option<Box<QuadTree<T>>>,
     br : Option<Box<QuadTree<T>>>,
@@ -15,33 +16,34 @@ pub struct QuadTree<T>
 
 impl<T: Clone> QuadTree<T>
 {
-    pub fn new(x : f32, y : f32, w : f32, h : f32, max_values: usize) -> Self
+    pub fn new(x : f32, y : f32, w : f32, h : f32, max_values: usize, border_size: f32) -> Self
     {
         assert!(max_values > 0);
 
         QuadTree
         {
-            bb : AABB::new(Vec2(x, y), Vec2(w, h)),
+            bb : AABB::new(Vec2(x - border_size / 2.0, y - border_size / 2.0), Vec2(w + border_size / 2.0, h + border_size / 2.0)),
             values: Vec::new(),
             tr: None,
             tl: None,
             br: None,
             bl: None,
-            max_values
+            max_values,
+            border_size
         }
     }
 
-    fn from_bb(start : Vec2, size : Vec2, max_values: usize) -> Self
+    fn from_bb(start : Vec2, size : Vec2, max_values: usize, border_size : f32) -> Self
     {
-        QuadTree::new(start.0, start.1, size.0, size.1, max_values)
+        QuadTree::new(start.0, start.1, size.0, size.1, max_values, border_size)
     }
 
     fn subdivide(&mut self)
     {
-        self.tl = Some(Box::new(QuadTree::from_bb(self.bb.start, self.bb.size / 2.0, self.max_values)));
-        self.tr = Some(Box::new(QuadTree::from_bb(self.bb.start + Vec2(self.bb.size.0/2.0, 0.0), self.bb.size / 2.0, self.max_values)));
-        self.bl = Some(Box::new(QuadTree::from_bb(self.bb.start + Vec2(0.0,self.bb.size.1/2.0), self.bb.size / 2.0, self.max_values)));
-        self.br = Some(Box::new(QuadTree::from_bb(self.bb.start + self.bb.size / 2.0, self.bb.size / 2.0, self.max_values)));
+        self.tl = Some(Box::new(QuadTree::from_bb(self.bb.start, self.bb.size / 2.0, self.max_values, self.border_size)));
+        self.tr = Some(Box::new(QuadTree::from_bb(self.bb.start + Vec2(self.bb.size.0/2.0, 0.0), self.bb.size / 2.0, self.max_values, self.border_size)));
+        self.bl = Some(Box::new(QuadTree::from_bb(self.bb.start + Vec2(0.0,self.bb.size.1/2.0), self.bb.size / 2.0, self.max_values, self.border_size)));
+        self.br = Some(Box::new(QuadTree::from_bb(self.bb.start + self.bb.size / 2.0, self.bb.size / 2.0, self.max_values, self.border_size)));
    
         let values : Vec<_> = self.values.drain(0..self.values.len()).collect();
         for v in &values
