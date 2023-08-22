@@ -47,10 +47,10 @@ impl<T: Clone> QuadTree<T>
         {
             return;
         }
-        self.tl = Some(Box::new(QuadTree::from_bb(self.bb.start, self.bb.size / 2.0, self.max_values, self.border_size, self.max_depth - 1)));
-        self.tr = Some(Box::new(QuadTree::from_bb(self.bb.start + Vec2(self.bb.size.0/2.0, 0.0), self.bb.size / 2.0, self.max_values, self.border_size, self.max_depth - 1)));
-        self.bl = Some(Box::new(QuadTree::from_bb(self.bb.start + Vec2(0.0,self.bb.size.1/2.0), self.bb.size / 2.0, self.max_values, self.border_size, self.max_depth - 1)));
-        self.br = Some(Box::new(QuadTree::from_bb(self.bb.start + self.bb.size / 2.0, self.bb.size / 2.0, self.max_values, self.border_size, self.max_depth - 1)));
+        self.tl = Some(Box::new(QuadTree::from_bb(self.bb.start, self.bb.size / 2.0, self.max_values, self.border_size / 2.0, self.max_depth - 1)));
+        self.tr = Some(Box::new(QuadTree::from_bb(self.bb.start + Vec2(self.bb.size.0/2.0, 0.0), self.bb.size / 2.0, self.max_values, self.border_size / 2.0, self.max_depth - 1)));
+        self.bl = Some(Box::new(QuadTree::from_bb(self.bb.start + Vec2(0.0,self.bb.size.1/2.0), self.bb.size / 2.0, self.max_values, self.border_size / 2.0, self.max_depth - 1)));
+        self.br = Some(Box::new(QuadTree::from_bb(self.bb.start + self.bb.size / 2.0, self.bb.size / 2.0, self.max_values, self.border_size / 2.0, self.max_depth - 1)));
 
         let values : Vec<_> = self.values.drain(0..self.values.len()).collect();
         for v in &values
