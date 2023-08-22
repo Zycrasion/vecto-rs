@@ -60,6 +60,11 @@ impl<T: Clone> QuadTree<T>
         }
     }
 
+    pub fn get_bb(&self) -> AABB
+    {
+        self.bb.clone()
+    }
+
     pub fn prune(&mut self)
     {
         if self.tl.as_ref().unwrap().len() + self.tr.as_ref().unwrap().len() + self.br.as_ref().unwrap().len() + self.bl.as_ref().unwrap().len() < self.max_values
