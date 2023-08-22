@@ -6,6 +6,7 @@ pub type QuadValue<T> = Box<(Vec2, T)>;
 pub struct QuadTree<T : Clone>
 {
     bb : AABB,
+    bb_raw : AABB,
     max_values : usize,
     max_depth : u32,
     values : Vec<QuadValue<T>>,
@@ -25,6 +26,7 @@ impl<T: Clone> QuadTree<T>
         QuadTree
         {
             bb : AABB::new(Vec2(x - border_size / 2.0, y - border_size / 2.0), Vec2(w + border_size, h + border_size)),
+            bb_raw : AABB { start: Vec2(x,y), size: Vec2(w, h) },
             values: Vec::new(),
             tr: None,
             tl: None,
@@ -47,10 +49,10 @@ impl<T: Clone> QuadTree<T>
         {
             return;
         }
-        self.tl = Some(Box::new(QuadTree::from_bb(self.bb.start, self.bb.size / 2.0, self.max_values, self.border_size, self.max_depth - 1)));
-        self.tr = Some(Box::new(QuadTree::from_bb(self.bb.start + Vec2(self.bb.size.0/2.0, 0.0), self.bb.size / 2.0, self.max_values, self.border_size, self.max_depth - 1)));
-        self.bl = Some(Box::new(QuadTree::from_bb(self.bb.start + Vec2(0.0,self.bb.size.1/2.0), self.bb.size / 2.0, self.max_values, self.border_size, self.max_depth - 1)));
-        self.br = Some(Box::new(QuadTree::from_bb(self.bb.start + self.bb.size / 2.0, self.bb.size / 2.0, self.max_values, self.border_size, self.max_depth - 1)));
+        self.tl = Some(Box::new(QuadTree::from_bb(self.bb_raw.start, self.bb_raw.size / 2.0, self.max_values, self.border_size, self.max_depth - 1)));
+        self.tr = Some(Box::new(QuadTree::from_bb(self.bb_raw.start + Vec2(self.bb_raw.size.0/2.0, 0.0), self.bb_raw.size / 2.0, self.max_values, self.border_size, self.max_depth - 1)));
+        self.bl = Some(Box::new(QuadTree::from_bb(self.bb_raw.start + Vec2(0.0,self.bb_raw.size.1/2.0), self.bb_raw.size / 2.0, self.max_values, self.border_size, self.max_depth - 1)));
+        self.br = Some(Box::new(QuadTree::from_bb(self.bb_raw.start + self.bb_raw.size / 2.0, self.bb_raw.size / 2.0, self.max_values, self.border_size, self.max_depth - 1)));
 
         let values : Vec<_> = self.values.drain(0..self.values.len()).collect();
         for v in &values
