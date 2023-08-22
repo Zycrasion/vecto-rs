@@ -2,7 +2,8 @@ use crate::{Vec2, bounding_box::AABB};
 
 pub type QuadValue<T> = Box<(Vec2, T)>;
 
-pub struct QuadTree<T>
+#[derive(Clone)]
+pub struct QuadTree<T : Clone>
 {
     bb : AABB,
     max_values : usize,
@@ -65,9 +66,24 @@ impl<T: Clone> QuadTree<T>
         self.bb.clone()
     }
 
-    pub fn branch_pointers(&self) -> (&Option<Box<QuadTree<T>>>, &Option<Box<QuadTree<T>>>, &Option<Box<QuadTree<T>>>, &Option<Box<QuadTree<T>>>)
+    pub fn get_tl(&self) -> Box<QuadTree<T>>
     {
-        (&self.tl, &self.tr, &self.bl, &self.br)
+        self.tl.clone().unwrap()
+    }
+
+    pub fn get_tr(&self) -> Box<QuadTree<T>>
+    {
+        self.tr.clone().unwrap()
+    }
+
+    pub fn get_bl(&self) -> Box<QuadTree<T>>
+    {
+        self.bl.clone().unwrap()
+    }
+
+    pub fn get_br(&self) -> Box<QuadTree<T>>
+    {
+        self.br.clone().unwrap()
     }
 
     pub fn prune(&mut self)
