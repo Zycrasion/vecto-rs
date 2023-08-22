@@ -65,6 +65,11 @@ impl<T: Clone> QuadTree<T>
         self.bb.clone()
     }
 
+    pub fn branch_pointers(&self) -> (&Option<Box<QuadTree<T>>>, &Option<Box<QuadTree<T>>>, &Option<Box<QuadTree<T>>>, &Option<Box<QuadTree<T>>>)
+    {
+        (&self.tl, &self.tr, &self.bl, &self.br)
+    }
+
     pub fn prune(&mut self)
     {
         if self.tl.as_ref().unwrap().len() + self.tr.as_ref().unwrap().len() + self.br.as_ref().unwrap().len() + self.bl.as_ref().unwrap().len() < self.max_values
@@ -217,7 +222,7 @@ impl<T: Clone> QuadTree<T>
         None
     }
 
-    fn is_leaf(&self) -> bool
+    pub fn is_leaf(&self) -> bool
     {
         return self.tr.is_none()
     }
