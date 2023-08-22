@@ -142,19 +142,19 @@ impl<T: Clone> QuadTree<T>
         {
             if self.tl.as_mut().unwrap().point_inside(p)
             {
-                return self.tl.as_mut().unwrap().add(v, p);
+                self.tl.as_mut().unwrap().add(v.clone(), p);
             }
             if self.tr.as_mut().unwrap().point_inside(p)
             {
-                return self.tr.as_mut().unwrap().add(v, p);
+                self.tr.as_mut().unwrap().add(v.clone(), p);
             }
             if self.bl.as_mut().unwrap().point_inside(p)
             {
-                return self.bl.as_mut().unwrap().add(v, p);
+                self.bl.as_mut().unwrap().add(v.clone(), p);
             }
             if self.br.as_mut().unwrap().point_inside(p)
             {
-                return self.br.as_mut().unwrap().add(v, p);
+                self.br.as_mut().unwrap().add(v.clone(), p);
             }
         }
     }
