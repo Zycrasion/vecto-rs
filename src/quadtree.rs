@@ -17,7 +17,7 @@ pub struct QuadTree<T : Clone>
     bl : Option<Box<QuadTree<T>>>,
 }
 
-impl<T: Clone> QuadTree<T>
+impl<T: Clone + PartialEq> QuadTree<T>
 {
     pub fn new(x : f32, y : f32, w : f32, h : f32, max_values: usize, border_size: f32, max_depth : u32) -> Self
     {
@@ -273,6 +273,39 @@ impl<T: Clone> QuadTree<T>
             if self.br.as_mut().unwrap().point_inside(p)
             {
                 return self.br.as_mut().unwrap().remove(p);
+            }
+        }
+        None
+    }
+
+    pub fn find(&self, value : T) -> Option<Vec2>
+    {
+        if self.is_leaf()
+        {
+            for i in 0..self.values.len()
+            {
+                if self.values[i].1 == value
+                {
+                    return Some(self.values[i].0);
+                }
+            }
+        } else 
+        {
+            if let Some(v) = self.tl.as_ref().unwrap().find(value.clone())
+            {
+                return Some(v);
+            }
+            if let Some(v) = self.tr.as_ref().unwrap().find(value.clone())
+            {
+                return Some(v);
+            }
+            if let Some(v) = self.bl.as_ref().unwrap().find(value.clone())
+            {
+                return Some(v);
+            }
+            if let Some(v) = self.br.as_ref().unwrap().find(value.clone())
+            {
+                return Some(v);
             }
         }
         None
