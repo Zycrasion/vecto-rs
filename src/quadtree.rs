@@ -161,6 +161,33 @@ impl<T: Clone> QuadTree<T>
         &mut self.values
     }
 
+    pub fn query_no_mut(&mut self, p : Vec2) -> &Vec<QuadValue<T>>
+    {
+        if self.is_leaf()
+        {
+            return &self.values
+        } else 
+        {
+            if self.tl.as_mut().unwrap().point_inside(p)
+            {
+                return self.tl.as_mut().unwrap().query(p);
+            }
+            if self.tr.as_mut().unwrap().point_inside(p)
+            {
+                return self.tr.as_mut().unwrap().query(p);
+            }
+            if self.bl.as_mut().unwrap().point_inside(p)
+            {
+                return self.bl.as_mut().unwrap().query(p);
+            }
+            if self.br.as_mut().unwrap().point_inside(p)
+            {
+                return self.br.as_mut().unwrap().query(p);
+            }
+        }
+        &self.values
+    }
+
     pub fn add(&mut self, v : T, p : Vec2)
     {
         if self.is_leaf()
