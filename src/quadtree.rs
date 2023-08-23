@@ -193,6 +193,12 @@ impl<T: Clone> QuadTree<T>
         }
     }
 
+    pub fn change_pos(&mut self, p : Vec2, p2 : Vec2)
+    {
+        let o = self.remove(p);
+        self.add(o.unwrap().1, p2);
+    }
+
     pub fn len(&self) -> usize
     {
         self.values.len()
