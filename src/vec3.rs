@@ -1,5 +1,7 @@
 use std::fmt::{Debug, Display};
 
+use crate::Vec2;
+
 #[derive(Clone, Copy)]
 pub struct Vec3(pub f32, pub f32, pub f32);
 
@@ -173,5 +175,13 @@ impl Into<(f32, f32, f32)> for Vec3
 {
     fn into(self) -> (f32, f32, f32) {
         (self.0, self.1, self.2)
+    }
+}
+
+impl Into<Vec2> for Vec3
+{
+    fn into(self) -> Vec2
+    {
+        Vec2(self.0, self.1)
     }
 }
