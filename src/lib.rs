@@ -17,5 +17,5 @@ mod line;
 pub mod maths   
 {
     pub use crate::line::*;
-    pub use crate::triangles::point_inside_triangle;
+    pub use crate::triangles::*;
 }
