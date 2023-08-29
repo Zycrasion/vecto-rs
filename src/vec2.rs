@@ -33,14 +33,14 @@ impl Vec2
         self.clone() / self.magnitude()
     }
 
-    pub fn x<T : TryFrom<f32> >(&self) -> T where <T as TryFrom<f32>>::Error: Debug
+    pub fn x(&self) -> f32
     {
-        self.0.try_into().unwrap()
+        self.0
     }
 
-    pub fn y<T : TryFrom<f32> >(&self) -> T where <T as TryFrom<f32>>::Error: Debug
+    pub fn y(&self) -> f32
     {
-        self.1.try_into().unwrap()
+        self.1
     }
 }
 
