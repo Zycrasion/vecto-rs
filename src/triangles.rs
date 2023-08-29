@@ -1,4 +1,4 @@
-use crate::{Vec2, line::edge_function, Vec3};
+use crate::{Vec2, line::edge_function};
 
 pub fn point_inside_triangle<V : Into<Vec2>>(tri : (V, V, V), point : Vec2) -> bool
 {
