@@ -2,13 +2,23 @@ use crate::{Vec2, line::edge_function};
 
 pub struct Triangle2D
 {
-    p1 : Vec2,
-    p2 : Vec2,
-    p3 : Vec2
+    pub p1 : Vec2,
+    pub p2 : Vec2,
+    pub p3 : Vec2
 }
 
 impl Triangle2D
 {
+    pub fn new(p1 : Vec2, p2 : Vec2, p3 : Vec2) -> Self
+    {
+        Self
+        {
+            p1,
+            p2,
+            p3
+        }
+    }
+
     pub fn point_inside_triangle(&self, point : Vec2) -> bool
     {
         let v0 = self.p1.into();
