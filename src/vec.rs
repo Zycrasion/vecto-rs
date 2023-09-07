@@ -25,6 +25,25 @@ impl Vector
         (self.x.powi(2) + self.y.powi(2) + self.z.powi(2)).sqrt()
     }
 
+
+    pub fn dist(&self, other: &Self) -> f32
+    {
+        (*self - *other).magnitude().abs()
+    }
+
+    pub fn clamp(&self, min : Self, max : Self) -> Self
+    {
+        let mut new_vec = *self;
+        new_vec.x = new_vec.x.clamp(min.x, max.x);
+        new_vec.y = new_vec.y.clamp(min.y, max.y);
+        new_vec.z = new_vec.z.clamp(min.z, max.z);
+        new_vec
+    }
+
+    pub fn normalized(&self) -> Self
+    {
+        *self / self.magnitude()
+    }
 }
 
 impl PartialEq for Vector
