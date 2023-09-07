@@ -2,8 +2,7 @@
 This is a math library where i will dump all my data types.
 
 ## Current Contents:
--   Vector2
--   Vector3
+-   Vector
 -   Quadtree
 -   AABB ( Axis Aligned Bounding Box )
 -   Useful triangle functions
