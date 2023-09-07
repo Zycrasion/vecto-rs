@@ -1,6 +1,6 @@
-use crate::{Vec2, bounding_box::AABB};
+use crate::{Vector, bounding_box::AABB};
 
-pub type QuadValue<T> = Box<(Vec2, T)>;
+pub type QuadValue<T> = Box<(Vector, T)>;
 
 #[derive(Clone)]
 pub struct QuadTree<T : Clone>
@@ -25,8 +25,8 @@ impl<T: Clone + PartialEq> QuadTree<T>
 
         QuadTree
         {
-            bb : AABB::new(Vec2(x - border_size / 2.0, y - border_size / 2.0), Vec2(w + border_size, h + border_size)),
-            bb_raw : AABB { start: Vec2(x,y), size: Vec2(w, h) },
+            bb : AABB::new(Vector::new2(x - border_size / 2.0, y - border_size / 2.0), Vector::new2(w + border_size, h + border_size)),
+            bb_raw : AABB { start: Vector::new2(x,y), size: Vector::new2(w, h) },
             values: Vec::new(),
             tr: None,
             tl: None,
@@ -38,9 +38,9 @@ impl<T: Clone + PartialEq> QuadTree<T>
         }
     }
 
-    fn from_bb(start : Vec2, size : Vec2, max_values: usize, border_size : f32, max_depth : u32) -> Self
+    fn from_bb(start : Vector, size : Vector, max_values: usize, border_size : f32, max_depth : u32) -> Self
     {
-        QuadTree::new(start.0, start.1, size.0, size.1, max_values, border_size, max_depth)
+        QuadTree::new(start.x, start.y, size.x, size.y, max_values, border_size, max_depth)
     }
 
     fn subdivide(&mut self)
@@ -50,8 +50,8 @@ impl<T: Clone + PartialEq> QuadTree<T>
             return;
         }
         self.tl = Some(Box::new(QuadTree::from_bb(self.bb_raw.start, self.bb_raw.size / 2.0, self.max_values, self.border_size, self.max_depth - 1)));
-        self.tr = Some(Box::new(QuadTree::from_bb(self.bb_raw.start + Vec2(self.bb_raw.size.0/2.0, 0.0), self.bb_raw.size / 2.0, self.max_values, self.border_size, self.max_depth - 1)));
-        self.bl = Some(Box::new(QuadTree::from_bb(self.bb_raw.start + Vec2(0.0,self.bb_raw.size.1/2.0), self.bb_raw.size / 2.0, self.max_values, self.border_size, self.max_depth - 1)));
+        self.tr = Some(Box::new(QuadTree::from_bb(self.bb_raw.start + Vector::new2(self.bb_raw.size.x/2.0, 0.0), self.bb_raw.size / 2.0, self.max_values, self.border_size, self.max_depth - 1)));
+        self.bl = Some(Box::new(QuadTree::from_bb(self.bb_raw.start + Vector::new2(0.0,self.bb_raw.size.y/2.0), self.bb_raw.size / 2.0, self.max_values, self.border_size, self.max_depth - 1)));
         self.br = Some(Box::new(QuadTree::from_bb(self.bb_raw.start + self.bb_raw.size / 2.0, self.bb_raw.size / 2.0, self.max_values, self.border_size, self.max_depth - 1)));
 
         let values : Vec<_> = self.values.drain(0..self.values.len()).collect();
@@ -112,7 +112,7 @@ impl<T: Clone + PartialEq> QuadTree<T>
         self.values.append(&mut self.br.as_mut().unwrap().remove_values());
     }
 
-    fn point_inside(&self, p : Vec2) -> bool
+    fn point_inside(&self, p : Vector) -> bool
     {
         self.bb.point_inside(p)
     }
@@ -134,7 +134,7 @@ impl<T: Clone + PartialEq> QuadTree<T>
         values
     }
 
-    pub fn query(&mut self, p : Vec2) -> &mut Vec<QuadValue<T>>
+    pub fn query(&mut self, p : Vector) -> &mut Vec<QuadValue<T>>
     {
         if self.is_leaf()
         {
@@ -161,7 +161,7 @@ impl<T: Clone + PartialEq> QuadTree<T>
         &mut self.values
     }
 
-    pub fn query_no_mut(&mut self, p : Vec2) -> &Vec<QuadValue<T>>
+    pub fn query_no_mut(&mut self, p : Vector) -> &Vec<QuadValue<T>>
     {
         if self.is_leaf()
         {
@@ -188,7 +188,7 @@ impl<T: Clone + PartialEq> QuadTree<T>
         &self.values
     }
 
-    pub fn add(&mut self, v : T, p : Vec2)
+    pub fn add(&mut self, v : T, p : Vector)
     {
         if self.is_leaf()
         {
@@ -220,7 +220,7 @@ impl<T: Clone + PartialEq> QuadTree<T>
         }
     }
 
-    pub fn change_pos(&mut self, p : Vec2, p2 : Vec2) -> Result<(), ()>
+    pub fn change_pos(&mut self, p : Vector, p2 : Vector) -> Result<(), ()>
     {
         let o = self.remove(p);
         if o.is_none()
@@ -236,7 +236,7 @@ impl<T: Clone + PartialEq> QuadTree<T>
         self.values.len()
     }
 
-    pub fn remove(&mut self, p : Vec2) -> Option<QuadValue<T>>
+    pub fn remove(&mut self, p : Vector) -> Option<QuadValue<T>>
     {
         if self.is_leaf()
         {
@@ -278,7 +278,7 @@ impl<T: Clone + PartialEq> QuadTree<T>
         None
     }
 
-    pub fn find(&self, value : T) -> Option<Vec2>
+    pub fn find(&self, value : T) -> Option<Vector>
     {
         if self.is_leaf()
         {

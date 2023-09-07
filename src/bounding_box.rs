@@ -1,15 +1,15 @@
-use crate::Vec2;
+use crate::Vector;
 
 #[derive(Clone, Copy, Default, PartialEq)]
 pub struct AABB
 {
-    pub start : Vec2,
-    pub size : Vec2
+    pub start : Vector,
+    pub size : Vector
 }
 
 impl AABB
 {
-    pub fn new(start : Vec2, size : Vec2) -> Self
+    pub fn new(start : Vector, size : Vector) -> Self
     {
         AABB
         {
@@ -18,13 +18,14 @@ impl AABB
         }
     }
 
-    pub fn point_inside(&self, p : Vec2) -> bool
+    pub fn point_inside(&self, p : Vector) -> bool
     {
         return p >= self.start && p <= self.start + self.size;
     }
 
     pub fn intersection(&self, o : AABB) -> bool
     {
+        todo!();
         return o.point_inside(self.start) || self.point_inside(o.start)
          ||  o.point_inside(self.start + self.size) || self.point_inside(o.start + o.size)
     }

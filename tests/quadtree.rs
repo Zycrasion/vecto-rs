@@ -1,4 +1,4 @@
-use vecto_rs::{QuadTree, Vec2};
+use vecto_rs::{QuadTree, Vector};
 
 #[test]
 fn quadtree_simple()
@@ -7,10 +7,10 @@ fn quadtree_simple()
     
     for i in 0..10_000
     {
-        tree.add((i % 2) == 0, Vec2((i % 500) as f32, (i % 500) as f32));
+        tree.add((i % 2) == 0, Vector::new2((i % 500) as f32, (i % 500) as f32));
     }
 
-    let cell = tree.query(Vec2(230.0, 230.0));
+    let cell = tree.query(Vector::new2(230.0, 230.0));
 
     println!("{}", cell.len());
     for c in cell
@@ -20,7 +20,7 @@ fn quadtree_simple()
 
     for i in 0..1000
     {
-        tree.remove(Vec2((i % 500) as f32, (i % 500) as f32));
+        tree.remove(Vector::new2((i % 500) as f32, (i % 500) as f32));
     }
 
     tree.prune();

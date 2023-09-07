@@ -1,15 +1,15 @@
-use crate::{Vec2, line::edge_function};
+use crate::{Vector, line::edge_function};
 
 pub struct Triangle2D
 {
-    pub p1 : Vec2,
-    pub p2 : Vec2,
-    pub p3 : Vec2
+    pub p1 : Vector,
+    pub p2 : Vector,
+    pub p3 : Vector
 }
 
 impl Triangle2D
 {
-    pub fn new(p1 : Vec2, p2 : Vec2, p3 : Vec2) -> Self
+    pub fn new(p1 : Vector, p2 : Vector, p3 : Vector) -> Self
     {
         Self
         {
@@ -19,7 +19,7 @@ impl Triangle2D
         }
     }
 
-    pub fn point_inside_triangle(&self, point : Vec2) -> bool
+    pub fn point_inside_triangle(&self, point : Vector) -> bool
     {
         let v0 = self.p1.into();
         let v1 = self.p2.into();
@@ -27,7 +27,7 @@ impl Triangle2D
         edge_function((v0, v1), point) > 0.0 && edge_function((v1, v2), point) > 0.0 && edge_function((v2, v0), point) > 0.0
     }
 
-    pub fn barycentric_coordinates(&self, point : Vec2) -> Option<(f32, f32, f32)>
+    pub fn barycentric_coordinates(&self, point : Vector) -> Option<(f32, f32, f32)>
     {
         let v0 = self.p1.into();
         let v1 = self.p2.into();
