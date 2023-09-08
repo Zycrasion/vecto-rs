@@ -25,8 +25,6 @@ impl AABB
 
     pub fn intersection(&self, o : AABB) -> bool
     {
-        todo!();
-        return o.point_inside(self.start) || self.point_inside(o.start)
-         ||  o.point_inside(self.start + self.size) || self.point_inside(o.start + o.size)
+        return self.start <= o.start + o.size && o.start >= self.start + self.size
     }
 }
