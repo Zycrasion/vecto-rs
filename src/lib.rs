@@ -1,3 +1,5 @@
+#[warn(missing_docs)]
+
 mod bounding_box;
 pub use bounding_box::AABB;
 
