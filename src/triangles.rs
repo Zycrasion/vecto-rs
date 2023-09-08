@@ -1,37 +1,54 @@
 use crate::{Vector, line::edge_function};
 
-pub struct Triangle2D
+pub enum TriangleEdge
 {
-    pub p1 : Vector,
-    pub p2 : Vector,
-    pub p3 : Vector
+    AB,
+    BC,
+    CA
 }
 
-impl Triangle2D
+pub struct Triangle
 {
-    pub fn new(p1 : Vector, p2 : Vector, p3 : Vector) -> Self
+    pub a : Vector,
+    pub b : Vector,
+    pub c : Vector
+}
+
+impl Triangle
+{
+    pub fn new(a : Vector, b : Vector, c : Vector) -> Self
     {
         Self
         {
-            p1,
-            p2,
-            p3
+            a,
+            b,
+            c
+        }
+    }
+
+    pub fn get_edge(&self, edge : TriangleEdge) -> f32
+    {
+        match edge
+        {
+            TriangleEdge::AB => self.a.dist(&self.b),
+            TriangleEdge::BC => self.b.dist(&self.a),
+            TriangleEdge::CA => self.c.dist(&self.a),
         }
     }
 
     pub fn point_inside_triangle(&self, point : Vector) -> bool
     {
-        let v0 = self.p1.into();
-        let v1 = self.p2.into();
-        let v2 = self.p3.into();
+        let v0 = self.a.into();
+        let v1 = self.b.into();
+        let v2 = self.c.into();
         edge_function((v0, v1), point) > 0.0 && edge_function((v1, v2), point) > 0.0 && edge_function((v2, v0), point) > 0.0
     }
 
     pub fn barycentric_coordinates(&self, point : Vector) -> Option<(f32, f32, f32)>
     {
-        let v0 = self.p1.into();
-        let v1 = self.p2.into();
-        let v2 = self.p3.into();
+        let v0 = self.a.into();
+        let v1 = self.b.into();
+        let v2 = self.c.into();
         let area = edge_function((v0, v1), v2);
         let mut w0 = edge_function((v1, v2), point);
         let mut w1 = edge_function((v2, v0), point);
