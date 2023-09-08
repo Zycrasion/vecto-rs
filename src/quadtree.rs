@@ -1,7 +1,28 @@
-use crate::{Vector, bounding_box::AABB};
+use crate::positional::Vector;
+use crate::spatial::AABB;
 
 pub type QuadValue<T> = Box<(Vector, T)>;
 
+/// QuadTree for segmenting 2D space effectively
+/// ```
+/// use vecto_rs::*;
+/// let mut tree : QuadTree<bool> = QuadTree::new(0.0, 0.0, 500.0, 500.0, 80, 0.0, 10);  
+/// for i in 0..100
+/// {
+///     tree.add((i % 2) == 0, Vector::new2((i % 500) as f32, (i % 500) as f32));
+/// }
+/// let cell = tree.query(Vector::new2(230.0, 230.0));
+/// println!("{}", cell.len());
+/// for c in cell
+/// {
+///     println!("{}: {}", c.0, c.1);
+/// }
+/// for i in 0..100
+/// {
+///     tree.remove(Vector::new2((i % 500) as f32, (i % 500) as f32));
+/// }
+// tree.prune();
+/// ```
 #[derive(Clone)]
 pub struct QuadTree<T : Clone>
 {
@@ -19,6 +40,17 @@ pub struct QuadTree<T : Clone>
 
 impl<T: Clone + PartialEq> QuadTree<T>
 {
+    /// Create a new QuadTree
+    /// 
+    /// x, y : Position of quadtree
+    /// 
+    /// w, h : Size of QuadTree
+    /// 
+    /// max_values : max amount of values in QuadTree
+    /// 
+    /// border_size : Size of Shared Space Between QuadTree Branches/ Leaves
+    /// 
+    /// max_depth : Maximum subdivision
     pub fn new(x : f32, y : f32, w : f32, h : f32, max_values: usize, border_size: f32, max_depth : u32) -> Self
     {
         assert!(max_values > 0);
@@ -63,31 +95,39 @@ impl<T: Clone + PartialEq> QuadTree<T>
         }
     }
 
+    /// Get bounding box
     pub fn get_bb(&self) -> AABB
     {
         self.bb.clone()
     }
 
+    /// Get Top Left Node
     pub fn get_tl(&self) -> Box<QuadTree<T>>
     {
         self.tl.clone().unwrap()
     }
 
+    /// Get Top Right Node
     pub fn get_tr(&self) -> Box<QuadTree<T>>
     {
         self.tr.clone().unwrap()
     }
 
+    /// Get Bottom Left Node
     pub fn get_bl(&self) -> Box<QuadTree<T>>
     {
         self.bl.clone().unwrap()
     }
 
+    /// Get Bottom Right Node
     pub fn get_br(&self) -> Box<QuadTree<T>>
     {
         self.br.clone().unwrap()
     }
 
+    /// Prune the tree
+    /// 
+    /// It un-subdivides nodes if they need to.
     pub fn prune(&mut self)
     {
         if self.tl.as_ref().unwrap().len() + self.tr.as_ref().unwrap().len() + self.br.as_ref().unwrap().len() + self.bl.as_ref().unwrap().len() < self.max_values
@@ -134,6 +174,7 @@ impl<T: Clone + PartialEq> QuadTree<T>
         values
     }
 
+    /// Get Nodes in Cell with position p
     pub fn query(&mut self, p : Vector) -> &mut Vec<QuadValue<T>>
     {
         if self.is_leaf()
@@ -161,33 +202,35 @@ impl<T: Clone + PartialEq> QuadTree<T>
         &mut self.values
     }
 
-    pub fn query_no_mut(&mut self, p : Vector) -> &Vec<QuadValue<T>>
+    /// Query value without getting mutable reference and without using a mutable reference
+    pub fn query_no_mut(&self, p : Vector) -> &Vec<QuadValue<T>>
     {
         if self.is_leaf()
         {
             return &self.values
         } else 
         {
-            if self.tl.as_mut().unwrap().point_inside(p)
+            if self.tl.as_ref().unwrap().point_inside(p)
             {
-                return self.tl.as_mut().unwrap().query(p);
+                return self.tl.as_ref().unwrap().query_no_mut(p);
             }
-            if self.tr.as_mut().unwrap().point_inside(p)
+            if self.tr.as_ref().unwrap().point_inside(p)
             {
-                return self.tr.as_mut().unwrap().query(p);
+                return self.tr.as_ref().unwrap().query_no_mut(p);
             }
-            if self.bl.as_mut().unwrap().point_inside(p)
+            if self.bl.as_ref().unwrap().point_inside(p)
             {
-                return self.bl.as_mut().unwrap().query(p);
+                return self.bl.as_ref().unwrap().query_no_mut(p);
             }
-            if self.br.as_mut().unwrap().point_inside(p)
+            if self.br.as_ref().unwrap().point_inside(p)
             {
-                return self.br.as_mut().unwrap().query(p);
+                return self.br.as_ref().unwrap().query_no_mut(p);
             }
         }
         &self.values
     }
 
+    /// Add value to Quad Tree At position p
     pub fn add(&mut self, v : T, p : Vector)
     {
         if self.is_leaf()
@@ -220,6 +263,7 @@ impl<T: Clone + PartialEq> QuadTree<T>
         }
     }
 
+    /// Change position of value
     pub fn change_pos(&mut self, p : Vector, p2 : Vector) -> Result<(), ()>
     {
         let o = self.remove(p);
@@ -231,11 +275,13 @@ impl<T: Clone + PartialEq> QuadTree<T>
         Ok(())
     }
 
+    /// Get Length of values
     pub fn len(&self) -> usize
     {
         self.values.len()
     }
 
+    /// Remove value from position p
     pub fn remove(&mut self, p : Vector) -> Option<QuadValue<T>>
     {
         if self.is_leaf()
@@ -278,6 +324,7 @@ impl<T: Clone + PartialEq> QuadTree<T>
         None
     }
 
+    /// Find value at position p
     pub fn find(&self, value : T) -> Option<Vector>
     {
         if self.is_leaf()
@@ -311,6 +358,7 @@ impl<T: Clone + PartialEq> QuadTree<T>
         None
     }
 
+    /// get if leaf
     pub fn is_leaf(&self) -> bool
     {
         return self.tr.is_none()
