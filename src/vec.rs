@@ -1,36 +1,46 @@
 use std::{fmt::{Debug, Display}, ops};
 
+/// Vector
 #[derive(Clone, Copy)]
 pub struct Vector
 {
+    /// X Coordinate of Vector
     pub x : f32,
+
+    /// Y Coordinate of Vector
     pub y : f32,
+
+    /// Z Coordinate of Vector
     pub z : f32,
 }
 
 impl Vector
 {
+    /// Create a Vector2
     pub fn new2(x : f32 , y : f32) -> Self
     {
         Self { x, y, z: 0.0 }
     }
 
+    /// Create a Vector3
     pub fn new3(x : f32 , y : f32, z : f32) -> Self
     {
         Self { x, y, z }
     }
 
+    /// Get Length of Vector
     pub fn magnitude(&self) -> f32
     {
         (self.x.powi(2) + self.y.powi(2) + self.z.powi(2)).sqrt()
     }
 
-
+    /// Distance Between 2 Vectors
     pub fn dist(&self, other: &Self) -> f32
     {
         (*self - *other).magnitude().abs()
     }
 
+    /// Clamp Vector between points
     pub fn clamp(&self, min : Self, max : Self) -> Self
     {
         let mut new_vec = *self;
@@ -40,6 +50,7 @@ impl Vector
         new_vec
     }
 
+    /// Get Normalised Vector
     pub fn normalized(&self) -> Self
     {
         *self / self.magnitude()
