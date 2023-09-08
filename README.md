@@ -18,6 +18,7 @@ cargo add --git https://github.com/Zycrasion/vecto-rs/
 - [ ] Stabilise the API
 - [ ] Add Polish and Quality Of Life features
 - [x] Change Vector 2 & 3 (Merge them together?)
+- [ ] Document Everything
 
 ## Version
 This library is currently pre 1.0.0, therefore many things may change without any warnings. I might change any public api without backwards compatibility.
