@@ -5,7 +5,8 @@ pub type QuadValue<T> = Box<(Vector, T)>;
 
 /// QuadTree for segmenting 2D space effectively
 /// ```
-/// use vecto_rs::*;
+/// use vecto_rs::positional::*;
+/// use vecto_rs::spatial::*;
 /// let mut tree : QuadTree<bool> = QuadTree::new(0.0, 0.0, 500.0, 500.0, 80, 0.0, 10);  
 /// for i in 0..100
 /// {
