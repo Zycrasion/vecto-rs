@@ -1,4 +1,4 @@
-use vecto_rs::Vector;
+use vecto_rs::positional::Vector;
 
 #[test]
 fn vector_cmp()
