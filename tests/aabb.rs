@@ -1,4 +1,4 @@
-use vecto_rs::{AABB, Vector};
+use vecto_rs::{spatial::AABB, positional::Vector};
 
 #[test]
 fn test_aabb()
