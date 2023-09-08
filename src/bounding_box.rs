@@ -25,6 +25,8 @@ impl AABB
 
     pub fn intersection(&self, o : AABB) -> bool
     {
-        return self.start <= o.start + o.size && o.start >= self.start + self.size
+        return  (self.start.x <= o.start.x + o.size.x && self.start.x + self.size.x >= o.start.x) &&
+                (self.start.y <= o.start.y + o.size.y && self.start.y + self.size.y >= o.start.y) &&
+                (self.start.z <= o.start.z + o.size.z && self.start.z + self.size.z >= o.start.z)
     }
 }
