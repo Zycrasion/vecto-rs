@@ -1,5 +1,6 @@
-use crate::{Vector, line::edge_function};
+use crate::{positional::Vector, line::edge_function};
 
+/// Triangle Edge Descriptor
 pub enum TriangleEdge
 {
     AB,
@@ -7,15 +8,22 @@ pub enum TriangleEdge
     CA
 }
 
+/// Triangle class
 pub struct Triangle
 {
+    /// Position of point a
     pub a : Vector,
+
+    /// Position of point b
     pub b : Vector,
+
+    /// Position of point c
     pub c : Vector
 }
 
 impl Triangle
 {
+    /// Create new Triangle
     pub fn new(a : Vector, b : Vector, c : Vector) -> Self
     {
         Self
@@ -26,6 +34,7 @@ impl Triangle
         }
     }
 
+    /// Get length of edge
     pub fn get_edge(&self, edge : TriangleEdge) -> f32
     {
         match edge
@@ -36,6 +45,7 @@ impl Triangle
         }
     }
 
+    /// Check if point inside triangle
     pub fn point_inside_triangle(&self, point : Vector) -> bool
     {
         let v0 = self.a.into();
@@ -44,6 +54,7 @@ impl Triangle
         edge_function((v0, v1), point) > 0.0 && edge_function((v1, v2), point) > 0.0 && edge_function((v2, v0), point) > 0.0
     }
 
+    /// Calculate barycentric coordinates
     pub fn barycentric_coordinates(&self, point : Vector) -> Option<(f32, f32, f32)>
     {
         let v0 = self.a.into();
