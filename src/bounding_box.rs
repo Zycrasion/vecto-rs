@@ -5,7 +5,8 @@ use crate::positional::Vector;
 /// Usage is like follows
 /// 
 /// ```
-/// use vecto_rs::*;
+/// use vecto_rs::spatial::AABB;
+/// use vecto_rs::positional::Vector;
 /// let axis_box = AABB::new(Vector::new2(0.0,0.0), Vector::new2(1.0, 1.0));
 /// ```
 #[derive(Clone, Copy, Default, PartialEq)]
@@ -22,7 +23,8 @@ impl AABB
 {
     /// Create a new AABB by giving it the Top Left Corner and Size of Box
     /// ```
-    /// pub use vecto_rs::*;
+    /// use vecto_rs::spatial::AABB;
+    /// use vecto_rs::positional::Vector;
     /// AABB::new(Vector::new2(0.0,0.0), Vector::new2(1.0, 1.0));
     /// ```
     pub fn new(start : Vector, size : Vector) -> Self
@@ -36,7 +38,8 @@ impl AABB
 
     /// Check if a Vector is inside the Box
     /// ```
-    /// pub use vecto_rs::*;
+    /// use vecto_rs::spatial::AABB;
+    /// use vecto_rs::positional::Vector;
     /// let a = AABB::new(Vector::new2(0.0, 0.0),Vector::new2(5.0, 5.0));
     /// assert!(a.point_inside(Vector::new2(1.0,1.0)));
     /// ```
@@ -49,7 +52,8 @@ impl AABB
 
     /// Check if another AABB is inside this one
     /// ```
-    /// pub use vecto_rs::*;
+    /// use vecto_rs::spatial::AABB;
+    /// use vecto_rs::positional::Vector;
     /// let a = AABB::new(Vector::new2(0.0, 0.0),Vector::new2(5.0, 5.0));
     /// let b = AABB::new(Vector::new2(2.5, 0.0),Vector::new2(5.0, 5.0));
     /// assert!(a.intersection(b));
