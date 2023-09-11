@@ -9,6 +9,9 @@ mod triangles;
 
 mod line;
 
+#[macro_use]
+mod private_macros;
+
 mod vec;
 
 /// Trigonometry related functions

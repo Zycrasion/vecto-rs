@@ -1,4 +1,4 @@
-use std::{fmt::{Debug, Display}, ops};
+use std::{fmt::{Debug, Display}, ops::{self, MulAssign}};
 
 /// Vector
 #[derive(Clone, Copy)]
@@ -103,77 +103,25 @@ impl Display for Vector
     }
 }
 
-impl ops::Sub for Vector
-{
-    type Output = Vector;
+vec_vec_op!(Add, add, +);
+vec_vec_op!(Sub, sub, -);
+vec_vec_op!(Mul, mul, *);
+vec_vec_op!(Div, div, /);
 
-    fn sub(self, rhs: Self) -> Self::Output {
-        Vector::new3(self.x - rhs.x, self.y - rhs.y, self.z - rhs.z)
-    }
-}
+vec_vec_assign_op!(AddAssign, add_assign, +=);
+vec_vec_assign_op!(SubAssign, sub_assign, -=);
+vec_vec_assign_op!(MulAssign, mul_assign, *=);
+vec_vec_assign_op!(DivAssign, div_assign, /=); 
 
-impl ops::Add for Vector
-{
-    type Output = Vector;
+vec_f32_op!(Add, add, +);
+vec_f32_op!(Sub, sub, -);
+vec_f32_op!(Mul, mul, *);
+vec_f32_op!(Div, div, /);
 
-    fn add(self, rhs: Self) -> Self::Output {
-        Vector::new3(self.x + rhs.x, self.y + rhs.y, self.z + rhs.z)
-    }
-}
-
-impl ops::Mul for Vector
-{
-    type Output = Vector;
-
-    fn mul(self, rhs: Self) -> Self::Output {
-        Vector::new3(self.x * rhs.x, self.y * rhs.y, self.z * rhs.z)
-    }
-}
-
-impl ops::Div for Vector
-{
-    type Output = Vector;
-
-    fn div(self, rhs: Self) -> Self::Output {
-        Vector::new3(self.x / rhs.x, self.y / rhs.y, self.z / rhs.z)
-    }
-}
-
-impl ops::Sub<f32> for Vector
-{
-    type Output = Vector;
-
-    fn sub(self, rhs: f32) -> Self::Output {
-        Vector::new3(self.x - rhs, self.y - rhs, self.z - rhs)
-    }
-}
-
-impl ops::Add<f32> for Vector
-{
-    type Output = Vector;
-
-    fn add(self, rhs: f32) -> Self::Output {
-        Vector::new3(self.x + rhs, self.y + rhs, self.z + rhs)
-    }
-}
-
-impl ops::Mul<f32> for Vector
-{
-    type Output = Vector;
-
-    fn mul(self, rhs: f32) -> Self::Output {
-        Vector::new3(self.x * rhs, self.y * rhs, self.z * rhs)
-    }
-}
-
-impl ops::Div<f32> for Vector
-{
-    type Output = Vector;
-
-    fn div(self, rhs: f32) -> Self::Output {
-        Vector::new3(self.x / rhs, self.y / rhs, self.z / rhs)
-    }
-}
+vec_f32_assign_op!(AddAssign, add_assign, +=);
+vec_f32_assign_op!(SubAssign, sub_assign, -=);
+vec_f32_assign_op!(MulAssign, mul_assign, *=);
+vec_f32_assign_op!(DivAssign, div_assign, /=); 
 
 impl From<(f32, f32)> for Vector
 {
