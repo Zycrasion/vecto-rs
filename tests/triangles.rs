@@ -1,4 +1,4 @@
-use vecto_rs::{trig::Triangle, positional::Vector};
+use vecto_rs::{trig::{Triangle, TriangleEdge}, positional::Vector};
 
 fn tri_test_inside(tri : Triangle, point : Vector, expected : bool)
 {
@@ -25,4 +25,32 @@ fn tri_test_barycentric1()
         coords.0 + coords.1 + coords.2,
         1.0
     )
+}
+
+#[test]
+fn test_edges()
+{
+    let a = Vector::new2(0.0, 0.0);
+    let b = Vector::new2(0.0, 5.0);
+    let c = Vector::new2(5.0, 0.0);
+
+    let tri = Triangle::new(a, b, c);
+
+    assert_eq!(tri.get_edge(TriangleEdge::AB), a.dist(&b));
+    assert_eq!(tri.get_edge(TriangleEdge::BC), b.dist(&c));
+    assert_eq!(tri.get_edge(TriangleEdge::CA), c.dist(&a));
+}
+
+#[test]
+fn new()
+{
+    let a = Vector::new2(0.0, 0.0);
+    let b = Vector::new2(0.0, 5.0);
+    let c = Vector::new2(5.0, 0.0);
+
+    let tri = Triangle::new(a, b, c);
+
+    assert_eq!(a, tri.a);
+    assert_eq!(b, tri.b);
+    assert_eq!(c, tri.c);
 }

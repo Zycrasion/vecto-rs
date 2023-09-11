@@ -40,7 +40,7 @@ impl Triangle
         match edge
         {
             TriangleEdge::AB => self.a.dist(&self.b),
-            TriangleEdge::BC => self.b.dist(&self.a),
+            TriangleEdge::BC => self.b.dist(&self.c),
             TriangleEdge::CA => self.c.dist(&self.a),
         }
     }

@@ -37,12 +37,12 @@ cargo add --git https://github.com/Zycrasion/vecto-rs/
     - [ ] Into
       - [ ] Into<(f32, f32)>
       - [ ] Into<(f32, f32, f32)>
-  - [ ] Triangles
-    - [ ] new
-    - [ ] get_edge
-      - [ ] AB, BC, CA
-      - [ ] point_inside_triangle
-      - [ ] barycentric coordinates
+  - [x] Triangles
+    - [x] new
+    - [x] get_edge
+      - [x] AB, BC, CA
+    - [x] point_inside_triangle
+    - [x] barycentric coordinates
   - [x] QuadTree
   - [ ] Lines
     - [ ] edge_function
