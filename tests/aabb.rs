@@ -17,3 +17,25 @@ fn test_aabb1()
 
     assert!(!a.intersection(b));
 }
+
+#[test]
+fn point_inside()
+{
+    let start = Vector::new2(0.0, 0.0);
+    let size = Vector::new2(5.0, 5.0);
+
+    let aabb = AABB::new(start, size);
+    assert!(aabb.point_inside(size / 2.0));
+}
+
+#[test]
+fn new()
+{
+    let start = Vector::new2(0.0, 0.0);
+    let size = Vector::new2(5.0, 5.0);
+
+    let aabb = AABB::new(start, size);
+
+    assert_eq!(aabb.start, start);
+    assert_eq!(aabb.size, size);
+}

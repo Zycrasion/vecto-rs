@@ -19,6 +19,37 @@ cargo add --git https://github.com/Zycrasion/vecto-rs/
 - [ ] Add Polish and Quality Of Life features
 - [x] Change Vector 2 & 3 (Merge them together?)
 - [x] Document Everything
+- [ ] Comprehensive Tests
+  - [ ] Vector
+    - [ ] Vector +, -, *, /
+      - [ ] f32
+      - [x] Vector
+    - [ ] new2
+    - [ ] new3
+    - [ ] magnitude
+    - [ ] dist
+    - [ ] clamp
+    - [ ] normalized
+    - [x] ==, >, <, <=, >=
+    - [ ] From
+      - [ ] From<(f32, f32)>
+      - [ ] From<(f32, f32, f32)>
+    - [ ] Into
+      - [ ] Into<(f32, f32)>
+      - [ ] Into<(f32, f32, f32)>
+  - [ ] Triangles
+    - [ ] new
+    - [ ] get_edge
+      - [ ] AB, BC, CA
+      - [ ] point_inside_triangle
+      - [ ] barycentric coordinates
+  - [x] QuadTree
+  - [ ] Lines
+    - [ ] edge_function
+  - [x] AABB
+    - [x] new
+    - [x] point_inside
+    - [x] intersection
 
 ## Version
 This library is currently pre 1.0.0, therefore many things may change without any warnings. I might change any public api without backwards compatibility.

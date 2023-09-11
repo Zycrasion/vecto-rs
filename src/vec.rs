@@ -1,4 +1,4 @@
-use std::{fmt::{Debug, Display}, ops::{self, MulAssign}};
+use std::{fmt::{Debug, Display}, ops};
 
 /// Vector
 #[derive(Clone, Copy)]
