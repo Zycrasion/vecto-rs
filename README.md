@@ -6,6 +6,7 @@ This is a math library where i will dump all my data types.
 -   Quadtree
 -   AABB ( Axis Aligned Bounding Box )
 -   Useful triangle functions
+-   Lines
 
 ## Using the Library
 This is not available on crates.io.
