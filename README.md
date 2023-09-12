@@ -21,13 +21,13 @@ cargo add --git https://github.com/Zycrasion/vecto-rs/
 - [x] Document Everything
 - [ ] Comprehensive Tests
   - [ ] Vector
-    - [ ] Vector +, -, *, /
-      - [ ] f32
+    - [x] Vector +, -, *, /
+      - [x] f32
       - [x] Vector
-    - [ ] new2
-    - [ ] new3
-    - [ ] magnitude
-    - [ ] dist
+    - [x] new2
+    - [x] new3
+    - [x] magnitude
+    - [x] dist
     - [ ] clamp
     - [ ] normalized
     - [x] ==, >, <, <=, >=

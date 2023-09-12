@@ -37,7 +37,7 @@ impl Vector
     /// Distance Between 2 Vectors
     pub fn dist(&self, other: &Self) -> f32
     {
-        (*self - *other).magnitude().abs()
+        (*other - *self).magnitude().abs()
     }
 
     /// Clamp Vector between points
