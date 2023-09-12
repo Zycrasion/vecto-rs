@@ -3,8 +3,13 @@ use crate::{positional::Vector, trig::Line};
 /// Triangle Edge Descriptor
 pub enum TriangleEdge
 {
+    /// Edge from Points A to B
     AB,
+
+    /// Edge from Points B to C
     BC,
+
+    /// Edge from Points C to A
     CA
 }
 
