@@ -1,4 +1,4 @@
-use crate::{positional::Vector, line::edge_function};
+use crate::{positional::Vector, trig::Line};
 
 /// Triangle Edge Descriptor
 pub enum TriangleEdge
@@ -51,7 +51,10 @@ impl Triangle
         let v0 = self.a.into();
         let v1 = self.b.into();
         let v2 = self.c.into();
-        edge_function((v0, v1), point) > 0.0 && edge_function((v1, v2), point) > 0.0 && edge_function((v2, v0), point) > 0.0
+        let a  = Line(v0, v1);
+        let b = Line(v1, v2);
+        let c = Line(v2, v0);
+        a.edge_function(point) > 0.0 && b.edge_function(point) > 0.0 && c.edge_function(point) > 0.0
     }
 
     /// Calculate barycentric coordinates
@@ -60,10 +63,10 @@ impl Triangle
         let v0 = self.a.into();
         let v1 = self.b.into();
         let v2 = self.c.into();
-        let area = edge_function((v0, v1), v2);
-        let mut w0 = edge_function((v1, v2), point);
-        let mut w1 = edge_function((v2, v0), point);
-        let mut w2 = edge_function((v0, v1), point);
+        let area =   Line(v0, v1).edge_function(v2);
+        let mut w0 = Line(v1, v2).edge_function(point);
+        let mut w1 = Line(v2, v0).edge_function(point);
+        let mut w2 = Line(v0, v1).edge_function(point);
 
         if w0 >= 0.0 && w1 >= 0.0 && w2 >= 0.0
         {
