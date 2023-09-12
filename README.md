@@ -19,8 +19,8 @@ cargo add --git https://github.com/Zycrasion/vecto-rs/
 - [ ] Add Polish and Quality Of Life features
 - [x] Change Vector 2 & 3 (Merge them together?)
 - [x] Document Everything
-- [ ] Comprehensive Tests
-  - [ ] Vector
+- [x] Comprehensive Tests
+  - [x] Vector
     - [x] Vector +, -, *, /
       - [x] f32
       - [x] Vector
@@ -28,15 +28,15 @@ cargo add --git https://github.com/Zycrasion/vecto-rs/
     - [x] new3
     - [x] magnitude
     - [x] dist
-    - [ ] clamp
-    - [ ] normalized
+    - [x] clamp
+    - [x] normalized
     - [x] ==, >, <, <=, >=
-    - [ ] From
-      - [ ] From<(f32, f32)>
-      - [ ] From<(f32, f32, f32)>
-    - [ ] Into
-      - [ ] Into<(f32, f32)>
-      - [ ] Into<(f32, f32, f32)>
+    - [x] From
+      - [x] From<(f32, f32)>
+      - [x] From<(f32, f32, f32)>
+    - [x] Into
+      - [x] Into<(f32, f32)>
+      - [x] Into<(f32, f32, f32)>
   - [x] Triangles
     - [x] new
     - [x] get_edge
@@ -44,8 +44,8 @@ cargo add --git https://github.com/Zycrasion/vecto-rs/
     - [x] point_inside_triangle
     - [x] barycentric coordinates
   - [x] QuadTree
-  - [ ] Lines
-    - [ ] edge_function
+  - [x] Lines
+    - [x] edge_function
   - [x] AABB
     - [x] new
     - [x] point_inside

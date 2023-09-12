@@ -142,3 +142,42 @@ fn dist()
 
     assert_eq!(a1.dist(&a2), ((width1 - width).powi(2) + (height1 - height).powi(2)).sqrt());
 }
+
+#[test]
+fn clamp()
+{
+    let min = Vector::new2(0.0, 0.0);
+    let max = Vector::new2(5.0, 5.0);
+
+    let a = Vector::new2(5.0, 6.0);
+    let b = Vector::new2(5.0, -5.0);
+
+    assert_eq!(a.clamp(min, max), Vector::new2(5.0, 5.0));
+    assert_eq!(b.clamp(min, max), Vector::new2(5.0, 0.0));
+}   
+
+#[test]
+fn normalized()
+{
+    let a = Vector::new2(5.0, 6.0);
+    let b = Vector::new2(5.0, -5.0);
+
+    assert_eq!(a.normalized(), Vector::new2(0.6401844, 0.76822126));
+    assert_eq!(b.normalized(), Vector::new2(0.70710677, -0.70710677));
+}   
+
+#[test]
+fn from()
+{
+    let x = random!();
+    let y = random!();
+    let z = random!();
+
+    let from2 = (x, y);
+
+    assert_eq!(from2, Vector::from(from2).into());
+
+    let from3 = (x, y, z);
+
+    assert_eq!(from3, Vector::from(from3).into())
+}
