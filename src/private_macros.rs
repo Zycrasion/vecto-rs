@@ -1,3 +1,4 @@
+#[doc(hidden)]
 #[macro_export]
 macro_rules! vec_vec_op
 {
@@ -15,6 +16,7 @@ macro_rules! vec_vec_op
     }
 }
 
+#[doc(hidden)]
 #[macro_export]
 macro_rules! vec_vec_assign_op
 {
@@ -32,6 +34,7 @@ macro_rules! vec_vec_assign_op
     }
 }
 
+#[doc(hidden)]
 #[macro_export]
 macro_rules! vec_f32_op
 {
@@ -49,6 +52,7 @@ macro_rules! vec_f32_op
     }
 }
 
+#[doc(hidden)]
 #[macro_export]
 macro_rules! vec_f32_assign_op
 {
