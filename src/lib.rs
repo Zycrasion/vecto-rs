@@ -1,13 +1,17 @@
+#[warn(missing_docs)]
 mod bounding_box;
 
+#[warn(missing_docs)]
 mod quadtree;
 
+#[warn(missing_docs)]
 mod triangles;
 
+#[warn(missing_docs)]
 mod line;
 
 #[macro_use]
-mod private_macros;
+pub(crate) mod private_macros;
 
 mod vec;
 
