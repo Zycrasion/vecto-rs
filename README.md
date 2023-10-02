@@ -23,5 +23,8 @@ In order to use this Library use this command.
 cargo add --git https://github.com/Zycrasion/vecto-rs/
 ```
 
-## Version
-This library is currently pre 1.0.0, therefore many things may change without any warnings. I might change any public api without backwards compatibility.
+## Breaking changes
+### Classifying breaking changes
+Any code that would break a program using the library
+### What happens
+I will release any breaking changes under a new major version.
