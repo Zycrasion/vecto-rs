@@ -1,5 +1,13 @@
 use std::{fmt::{Debug, Display}, ops};
 
+pub struct Vector3(pub f32, pub f32, pub f32);
+impl Into<Vector> for Vector3
+{
+    fn into(self) -> Vector {
+        Vector { x: self.0, y: self.1, z: self.2 }
+    }
+}
+
 /// Vector
 #[derive(Clone, Copy)]
 pub struct Vector
