@@ -1,5 +1,6 @@
 use std::{fmt::{Debug, Display}, ops};
 
+/// Vector Shorthand
 pub struct Vector3(pub f32, pub f32, pub f32);
 impl Into<Vector> for Vector3
 {
