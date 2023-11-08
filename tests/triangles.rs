@@ -1,4 +1,4 @@
-use vecto_rs::{trig::{Triangle, TriangleEdge}, positional::Vector};
+use vecto_rs::{trig::{Triangle, TriangleEdge}, linear::*};
 
 fn tri_test_inside(tri : Triangle, point : Vector, expected : bool)
 {

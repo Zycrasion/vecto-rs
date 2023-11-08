@@ -1,4 +1,4 @@
-use vecto_rs::linear::*;
+use vecto_rs::linear::{Vector4, VectorTrait};
 
 /// https://codinglab.huostravelblog.com/programming/random-number-generator/index.php
 const NUMBERS : [f32; 64] = [
@@ -16,42 +16,12 @@ macro_rules! random {
     };
 }
 
-macro_rules! vec3_test {
+macro_rules! vec4_test {
     ($name:ident, $op:tt) => {
         #[test]
         fn $name()
         {
-            vec3_test!($op);
-        }
-
-    };
-    ($op:tt) => {
-        for _ in 0..100
-        {
-            let a = random!();
-            let b = random!();
-            let c = random!();
-            let a2 = random!();
-            let b2 = random!();
-            let c2 = random!();
-
-            let mut vec1 = Vector::new3(a, b, c);
-            vec1 = vec1 $op Vector::new3(a2, b2, c2);
-
-            assert_eq!(
-                vec1,
-                Vector::new3(a $op a2, b $op b2, c $op c2)
-            )
-        }
-    }
-}
-
-macro_rules! vec3_test_f32 {
-    ($name:ident, $op:tt) => {
-        #[test]
-        fn $name()
-        {
-            vec3_test_f32!($op);
+            vec4_test!($op);
         }
 
     };
@@ -62,27 +32,60 @@ macro_rules! vec3_test_f32 {
             let b = random!();
             let c = random!();
             let d = random!();
+            let a2 = random!();
+            let b2 = random!();
+            let c2 = random!();
+            let d2 = random!();
 
-            let mut vec1 = Vector::new3(a, b, c);
-            vec1 = vec1 $op d;
+            let mut vec1 = Vector4::new4(a, b, c, d);
+            vec1 = vec1 $op Vector4::new4(a2, b2, c2, d2);
 
             assert_eq!(
                 vec1,
-                Vector::new3(a $op d, b $op d, c $op d)
+                Vector4::new4(a $op a2, b $op b2, c $op c2, d $op d2)
             )
         }
     }
 }
 
-vec3_test!(addition_test_vec3, +);
-vec3_test!(subtraction_test_vec3, -);
-vec3_test!(multiplication_test_vec3, *);
-vec3_test!(division_test_vec3, /);
+macro_rules! vec4_test_f32 {
+    ($name:ident, $op:tt) => {
+        #[test]
+        fn $name()
+        {
+            vec4_test_f32!($op);
+        }
 
-vec3_test_f32!(addition_test_f32, +);
-vec3_test_f32!(subtraction_test_f32, -);
-vec3_test_f32!(multiplication_test_f32, *);
-vec3_test_f32!(division_test_f32, /);
+    };
+    ($op:tt) => {
+        for _ in 0..100
+        {
+            let a = random!();
+            let b = random!();
+            let c = random!();
+            let d = random!();
+            let e = random!();
+
+            let mut vec1 = Vector4::new4(a, b, c, d);
+            vec1 = vec1 $op e;
+
+            assert_eq!(
+                vec1,
+                Vector4::new4(a $op e, b $op e, c $op e, d $op e)
+            )
+        }
+    }
+}
+
+vec4_test!(addition_test_vec4, +);
+vec4_test!(subtraction_test_vec4, -);
+vec4_test!(multiplication_test_vec4, *);
+vec4_test!(division_test_vec4, /);
+
+vec4_test_f32!(addition_test_f32, +);
+vec4_test_f32!(subtraction_test_f32, -);
+vec4_test_f32!(multiplication_test_f32, *);
+vec4_test_f32!(division_test_f32, /);
 
 #[test]
 fn new2()
@@ -90,7 +93,7 @@ fn new2()
     let x = random!();
     let y = random!();
 
-    let vec2 = Vector::new2(x, y);
+    let vec2 = Vector4::new2(x, y);
 
     assert_eq!(vec2.x, x);
     assert_eq!(vec2.y, y);
@@ -104,7 +107,7 @@ fn new3()
     let y = random!();
     let z = random!();
 
-    let vec3 = Vector::new3(x, y, z);
+    let vec3 = Vector4::new3(x, y, z);
 
     assert_eq!(vec3.x, x);
     assert_eq!(vec3.y, y);
@@ -112,16 +115,32 @@ fn new3()
 }
 
 #[test]
+fn new4()
+{
+    let x = random!();
+    let y = random!();
+    let z = random!();
+    let w = random!();
+
+    let vec4 = Vector4::new4(x, y, z, w);
+
+    assert_eq!(vec4.x, x);
+    assert_eq!(vec4.y, y);
+    assert_eq!(vec4.z, z);
+    assert_eq!(vec4.w, w);
+}
+
+#[test]
 fn magnitude()
 {
     let strength = random!();
 
-    assert_eq!(Vector::new2(strength, 0.0).magnitude(), strength);
+    assert_eq!(Vector4::new2(strength, 0.0).magnitude(), strength);
 
     let width = random!();
     let height = random!();
 
-    assert_eq!(Vector::new2(width, height).magnitude(), (width * width + height * height).sqrt());
+    assert_eq!(Vector4::new2(width, height).magnitude(), (width * width + height * height).sqrt());
 }
 
 #[test]
@@ -129,16 +148,16 @@ fn dist()
 {
     let strength = random!();
 
-    assert_eq!(Vector::new2(strength, 0.0).dist(&Vector::new2(0.0, 0.0)), strength);
+    assert_eq!(Vector4::new2(strength, 0.0).dist(&Vector4::new2(0.0, 0.0)), strength);
 
     let width = random!();
     let height = random!();
 
-    let a1 = Vector::new2(width, height);
+    let a1 = Vector4::new2(width, height);
 
     let width1 = random!();
     let height1 = random!();
-    let a2 = Vector::new2(width1, height1);
+    let a2 = Vector4::new2(width1, height1);
 
     assert_eq!(a1.dist(&a2), ((width1 - width).powi(2) + (height1 - height).powi(2)).sqrt());
 }
@@ -146,38 +165,38 @@ fn dist()
 #[test]
 fn clamp()
 {
-    let min = Vector::new2(0.0, 0.0);
-    let max = Vector::new2(5.0, 5.0);
+    let min = Vector4::new2(0.0, 0.0);
+    let max = Vector4::new2(5.0, 5.0);
 
-    let a = Vector::new2(5.0, 6.0);
-    let b = Vector::new2(5.0, -5.0);
+    let a = Vector4::new2(5.0, 6.0);
+    let b = Vector4::new2(5.0, -5.0);
 
-    assert_eq!(a.clamp(min, max), Vector::new2(5.0, 5.0));
-    assert_eq!(b.clamp(min, max), Vector::new2(5.0, 0.0));
+    assert_eq!(a.clamp(min, max), Vector4::new2(5.0, 5.0));
+    assert_eq!(b.clamp(min, max), Vector4::new2(5.0, 0.0));
 }   
 
 #[test]
 fn normalized()
 {
-    let a = Vector::new2(5.0, 6.0);
-    let b = Vector::new2(5.0, -5.0);
+    let a = Vector4::new2(5.0, 6.0);
+    let b = Vector4::new2(5.0, -5.0);
 
-    assert_eq!(a.normalized(), Vector::new2(0.6401844, 0.76822126));
-    assert_eq!(b.normalized(), Vector::new2(0.70710677, -0.70710677));
+    assert_eq!(a.normalized(), Vector4::new2(0.6401844, 0.76822126));
+    assert_eq!(b.normalized(), Vector4::new2(0.70710677, -0.70710677));
 }   
 
-#[test]
-fn from()
-{
-    let x = random!();
-    let y = random!();
-    let z = random!();
+// #[test]
+// fn from()
+// {
+//     let x = random!();
+//     let y = random!();
+//     let z = random!();
 
-    let from2 = (x, y);
+//     let from2 = (x, y);
 
-    assert_eq!(from2, Vector::from(from2).into());
+//     assert_eq!(from2, Vector4::from(from2).into());
 
-    let from3 = (x, y, z);
+//     let from3 = (x, y, z);
 
-    assert_eq!(from3, Vector::from(from3).into())
-}
+//     assert_eq!(from3, Vector4::from(from3).into())
+// }

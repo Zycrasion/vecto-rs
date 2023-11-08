@@ -1,4 +1,4 @@
-use vecto_rs::{spatial::QuadTree, positional::Vector};
+use vecto_rs::{spatial::QuadTree, linear::*};
 
 #[test]
 fn quadtree_simple()

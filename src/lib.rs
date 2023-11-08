@@ -11,9 +11,12 @@ mod triangles;
 mod line;
 
 #[macro_use]
-pub(crate) mod private_macros;
+pub(self) mod private_macros;
 
 mod vec;
+
+#[warn(missing_docs)]
+mod mat4;
 
 #[warn(missing_docs)]
 /// Trigonometry related functions
@@ -24,10 +27,11 @@ pub mod trig
 }
 
 #[warn(missing_docs)]
-/// Positional related functions
-pub mod positional
+/// Linear Algebra
+pub mod linear
 {
-    pub use crate::vec::Vector;
+    pub use crate::vec::*;
+    pub use crate::mat4::*;
 }
 
 #[warn(missing_docs)]
