@@ -136,7 +136,8 @@ impl Display for Mat4
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         for ele in self.contents
         {
-            writeln!(f, "")
+            writeln!(f, "{ele}")?;
         }
+        Ok(())
     }
 }
