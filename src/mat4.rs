@@ -1,6 +1,6 @@
 use std::{ops::Mul, fmt::Display};
 
-use crate::vec::{Vector, Vector4, VectorTrait};
+use crate::vec::{Vector, Vector4};
 
 //  https://en.wikipedia.org/wiki/Transformation_matrix#Examples_in_3D_computer_graphics
 
