@@ -1,11 +1,13 @@
-use std::{ops::Mul, fmt::Display};
+use std::{ops::Mul, fmt::Display, f32::consts::PI};
 
 use crate::vec::{Vector, Vector4};
 
 //  https://en.wikipedia.org/wiki/Transformation_matrix#Examples_in_3D_computer_graphics
 
-#[derive(Copy, Clone, Debug, Default)]
+#[derive(Copy, Clone, Debug, Default, PartialEq, PartialOrd)]
 /// Matrice of order 4 x 4
+/// 
+/// Stored As Row Major
 pub struct Mat4
 {
     contents : [f32; 4 * 4]
@@ -107,6 +109,60 @@ impl Mat4
     {
         Vector4::new4(self.get(0, y),self.get(1, y),self.get(2, y),self.get(3, y))
     }
+    
+    /// Get Matrice As Row Major
+    pub fn get_row_major(&self) -> Mat4
+    {
+        return self.clone()
+    }
+
+    /// Get Matrix As Column Major
+    pub fn get_column_major(&self) -> Mat4
+    {
+        return self.transpose()
+    }
+
+    /// From Array (row major)
+    pub fn from_array(mat : &[f32; 4 * 4]) -> Mat4
+    {
+        Mat4 { contents: mat.clone() }
+    }
+
+    /// From Vector4
+    pub fn from_vec4(vec : &Vector4) -> Mat4
+    {
+        let mut mat = Mat4::new();
+        mat.change(0, 0, vec.x);
+        mat.change(1, 1, vec.y);
+        mat.change(2, 2, vec.z);
+        mat.change(3, 3, vec.w);
+        mat
+    }
+
+    /// Transform Matrix
+    pub fn new_transform(pos : Vector) -> Mat4
+    {
+        let mut transform = Mat4::new();
+        transform.change(0, 3, pos.x);
+        transform.change(1, 3, pos.y);
+        transform.change(2, 3, pos.z);
+        transform.change(3, 3, 1.);
+        
+        transform
+    }
+
+    /// Perspective Matrix
+    /// https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/building-basic-perspective-projection-matrix.html
+    pub fn set_perspective_matrix(fov : f32, near : f32, far : f32, mat : &mut Mat4)
+    {
+        let scale = 1. / (fov * 0.5 * PI / 180.).tan();
+        mat.change(0, 0, scale);
+        mat.change(1, 1, scale);
+        mat.change(2, 2, -far / (far - near));
+        mat.change(3, 2, -far * near / (far - near));
+        mat.change(2, 3, -1.);
+        mat.change(3, 3, 0.);
+    }
 }
 
 
@@ -131,12 +187,28 @@ impl Mul for Mat4
     }
 }
 
+impl Mul<Vector4> for Mat4
+{
+    type Output = Mat4;
+
+    fn mul(self, rhs: Vector4) -> Self::Output {
+        let rhs = Mat4::from_vec4(&rhs);
+        rhs * self
+    }   
+}
+
 impl Display for Mat4
 {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let mut i = 1;
         for ele in self.contents
         {
-            writeln!(f, "{ele}")?;
+            write!(f, "{ele} ")?;
+            if i % 4 == 0
+            {
+                writeln!(f, "")?;
+            }
+            i += 1;
         }
         Ok(())
     }
