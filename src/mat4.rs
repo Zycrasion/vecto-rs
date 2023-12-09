@@ -123,9 +123,9 @@ impl Mat4
     }
 
     /// From Array (row major)
-    pub fn from_array(mat : [f32; 4 * 4]) -> Mat4
+    pub const fn from_array(mat : [f32; 4 * 4]) -> Mat4
     {
-        Mat4 { contents: mat.clone() }
+        Mat4 { contents: mat }
     }
 
     /// From Vector4
