@@ -180,6 +180,12 @@ impl Mat4
             ]
         )
     }
+
+    /// get contents in array form
+    pub fn get_contents(&self) -> [f32; 4 * 4]
+    {
+        self.contents
+    }
 }
 
 
