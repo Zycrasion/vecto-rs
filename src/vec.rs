@@ -55,6 +55,15 @@ pub struct Vector {
     pub z: f32,
 }
 
+impl Vector
+{
+    /// Cross product
+    pub fn cross(a : &Vector, b : &Vector) -> Vector
+    {
+        Vector::new3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x)
+    }
+}
+
 impl VectorTrait for Vector {
     /// Create a Vector2
     fn new2(x: f32, y: f32) -> Self {
