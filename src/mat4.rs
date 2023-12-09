@@ -1,6 +1,6 @@
 use std::{ops::Mul, fmt::Display, f32::consts::PI};
 
-use crate::vec::{Vector, Vector4};
+use crate::vec::{Vector, Vector4, VectorTrait};
 
 //  https://en.wikipedia.org/wiki/Transformation_matrix#Examples_in_3D_computer_graphics
 
@@ -153,15 +153,32 @@ impl Mat4
 
     /// Perspective Matrix
     /// https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/building-basic-perspective-projection-matrix.html
-    pub fn set_perspective_matrix(fov : f32, near : f32, far : f32, mat : &mut Mat4)
+    pub fn set_perspective_matrix(&mut self, fov : f32, near : f32, far : f32)
     {
         let scale = 1. / (fov * 0.5 * PI / 180.).tan();
-        mat.change(0, 0, scale);
-        mat.change(1, 1, scale);
-        mat.change(2, 2, -far / (far - near));
-        mat.change(3, 2, -far * near / (far - near));
-        mat.change(2, 3, -1.);
-        mat.change(3, 3, 0.);
+        self.change(0, 0, scale);
+        self.change(1, 1, scale);
+        self.change(2, 2, -far / (far - near));
+        self.change(3, 2, -far * near / (far - near));
+        self.change(2, 3, -1.);
+        self.change(3, 3, 0.);
+    }
+
+    /// Creates a matrix looking at vector to from Vector from
+    pub fn look_at_rh(from : &Vector, to : &Vector, up : &Vector) -> Mat4
+    {
+        let forward = (*from - *to).normalized();
+        let right = Vector::cross(up, &forward).normalized();
+        let new_up = Vector::cross(&forward, &right);
+
+        Mat4::from_array(
+            [
+                right.x, right.y, right.z, 0.,
+                new_up.x, new_up.y, new_up.z, 0.,
+                forward.x, forward.y, forward.z, 0.,
+                from.x, from.y, from.z, 0.,
+            ]
+        )
     }
 }
 
