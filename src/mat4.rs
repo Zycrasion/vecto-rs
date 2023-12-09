@@ -176,7 +176,7 @@ impl Mat4
                 right.x, right.y, right.z, 0.,
                 new_up.x, new_up.y, new_up.z, 0.,
                 forward.x, forward.y, forward.z, 0.,
-                from.x, from.y, from.z, 0.,
+                from.x, from.y, from.z, 1.,
             ]
         )
     }

@@ -1,4 +1,4 @@
-use vecto_rs::linear::{Mat4, vector3};
+use vecto_rs::linear::{Mat4, vector3, Vector, VectorTrait};
 
 #[test]
 fn mult()
@@ -28,4 +28,16 @@ fn from_array_and_transpose()
 
     assert_eq!(mat.to_string(), "5 2 32 5 \n4 3 34 6 \n9 3 5 7 \n1 5 59 6 \n");
     assert_eq!(mat.transpose().to_string(), "5 4 9 1 \n2 3 3 5 \n32 34 5 59 \n5 6 7 6 \n")
+}
+
+#[test]
+fn look_at_rh()
+{
+    let from = Vector::new3(1., 1., 1.);
+    let to = Vector::new3(0., 0., 0.);
+    let up = Vector::new3(0., 1., 0.);
+
+    let matrix = Mat4::look_at_rh(&from, &to, &up);
+
+    println!("{:#?}", matrix.get_contents());
 }
