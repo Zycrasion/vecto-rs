@@ -19,11 +19,15 @@ mod vec;
 mod mat4;
 
 #[warn(missing_docs)]
+mod radians;
+
+#[warn(missing_docs)]
 /// Trigonometry related functions
 pub mod trig   
 {
     pub use crate::line::*;
     pub use crate::triangles::*;
+    pub use crate::radians::*;
 }
 
 #[warn(missing_docs)]
