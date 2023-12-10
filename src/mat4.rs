@@ -1,6 +1,6 @@
 use std::{ops::Mul, fmt::Display, f32::consts::PI};
 
-use crate::vec::{Vector, Vector4, VectorTrait};
+use crate::{vec::{Vector, Vector4, VectorTrait}, trig::to_radians};
 
 //  https://en.wikipedia.org/wiki/Transformation_matrix#Examples_in_3D_computer_graphics
 
@@ -152,16 +152,24 @@ impl Mat4
     }
 
     /// Perspective Matrix
+    /// 
+    /// fov is in degrees
+    /// 
     /// https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/building-basic-perspective-projection-matrix.html
-    pub fn set_perspective_matrix(&mut self, fov : f32, near : f32, far : f32)
+    pub fn new_perspective_matrix(width: f32, height: f32, fov : f32, near : f32, far : f32) -> Mat4
     {
-        let scale = 1. / (fov * 0.5 * PI / 180.).tan();
-        self.change(0, 0, scale);
-        self.change(1, 1, scale);
-        self.change(2, 2, -far / (far - near));
-        self.change(3, 2, -far * near / (far - near));
-        self.change(2, 3, -1.);
-        self.change(3, 3, 0.);
+        let aspect = width / height;
+        let z_range = near - far;
+        let tan_half_fov = to_radians(fov / 2.0).tan();
+        let mat = Mat4::from_array(
+            [
+                1.0 / (tan_half_fov * aspect), 0., 0., 0.,
+                0., 1. / tan_half_fov, 0., 0.,
+                0., 0., (-near - far) / z_range, 2. * far * near / z_range,
+                0., 0., 1., 0.
+            ]
+        );
+        mat
     }
 
     /// Creates a matrix looking at vector to from Vector from
