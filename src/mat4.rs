@@ -142,10 +142,10 @@ impl Mat4
     /// Transform Matrix
     pub fn new_transform(pos : Vector) -> Mat4
     {
-        let mut transform = Mat4::new();
-        transform.change(0, 3, pos.x);
-        transform.change(1, 3, pos.y);
-        transform.change(2, 3, pos.z);
+        let mut transform = Mat4::identity();
+        transform.change(3, 0, pos.x);
+        transform.change(3, 1, pos.y);
+        transform.change(3, 2, pos.z);
         transform.change(3, 3, 1.);
         
         transform
