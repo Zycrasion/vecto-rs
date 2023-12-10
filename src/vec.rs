@@ -63,6 +63,42 @@ impl Vector
     {
         Vector::new3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x)
     }
+
+    /// Rotate around the x axis
+    pub fn rotate_x(&mut self, angle : f32)
+    {
+        let cos = angle.cos();
+        let sin = angle.sin();
+        let y = self.y;
+        let z = self.z;
+        
+        self.y = y * cos - z * sin;
+        self.z = y * sin + z * cos;
+    }
+
+    /// Rotate around the y axis
+    pub fn rotate_y(&mut self, angle : f32)
+    {
+        let cos = angle.cos();
+        let sin = angle.sin();
+        let x = self.x;
+        let z = self.z;
+        
+        self.x =  x * cos + z * sin;
+        self.z = -x * sin + z * cos;
+    }
+    
+    /// Rotate around the z axis
+    pub fn rotate_z(&mut self, angle : f32)
+    {
+        let cos = angle.cos();
+        let sin = angle.sin();
+        let x = self.x;
+        let y = self.y;
+        
+        self.x = x * cos - y * sin;
+        self.y = x * sin + y * cos;
+    }
 }
 
 impl VectorTrait for Vector {
