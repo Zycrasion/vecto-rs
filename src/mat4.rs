@@ -1,4 +1,4 @@
-use std::{ops::Mul, fmt::Display, f32::consts::PI};
+use std::{ops::Mul, fmt::Display};
 
 use crate::{vec::{Vector, Vector4, VectorTrait}, trig::to_radians};
 
@@ -217,6 +217,27 @@ impl Mat4
     pub fn get_contents(&self) -> [f32; 4 * 4]
     {
         self.contents
+    }
+
+    /// to vec4
+    pub fn to_vec4(&self) -> Vector4
+    {
+        let mut vec4 = Vector4::default();
+        vec4.x = self.get_row(0).sum();
+        vec4.y = self.get_row(1).sum();
+        vec4.z = self.get_row(2).sum();
+        vec4.w = self.get_row(3).sum();
+        vec4
+    }
+
+    /// to vec3
+    pub fn to_vec3(&self) -> Vector
+    {
+        let mut vec3 = Vector::default();
+        vec3.x = self.get_row(0).sum();
+        vec3.y = self.get_row(1).sum();
+        vec3.z = self.get_row(2).sum();
+        vec3
     }
 }
 

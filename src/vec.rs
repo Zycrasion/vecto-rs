@@ -35,6 +35,7 @@ pub trait VectorTrait:
     fn clamp(&self, min: Self, max: Self) -> Self;
     fn dist(&self, other: &Self) -> f32;
     fn normalized(&self) -> Self;
+    fn sum(&self) -> f32;
 }
 
 /// Vector Shorthand
@@ -97,6 +98,11 @@ impl VectorTrait for Vector {
     /// Get Normalised Vector
     fn normalized(&self) -> Self {
         *self / self.magnitude()
+    }
+
+    /// Get Sum (all parts added together)
+    fn sum(&self) -> f32 {
+        self.x + self.y + self.z
     }
 }
 
@@ -252,6 +258,11 @@ impl VectorTrait for Vector4 {
     /// Get Normalised Vector
     fn normalized(&self) -> Self {
         *self / self.magnitude()
+    }
+
+    /// Get Sum (all parts added together)
+    fn sum(&self) -> f32 {
+        self.x + self.y + self.z + self.w
     }
 }
 
