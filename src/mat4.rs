@@ -90,14 +90,6 @@ impl Mat4
         (i % 4, i / 4)
     }
 
-    /// Translate the matrice by a vector
-    pub fn translate(&mut self, translation: Vector)
-    {
-        self.change(3, 0, translation.x);
-        self.change(3, 1, translation.y);
-        self.change(3, 2, translation.z);
-    }
-
     /// Get a column
     pub fn get_col(&self, x : usize) -> Vector4
     {
@@ -139,14 +131,46 @@ impl Mat4
         mat
     }
 
-    /// Transform Matrix
-    pub fn new_transform(pos : Vector) -> Mat4
+    /// Create a rotation Matrix
+    /// 
+    /// http://www.songho.ca/opengl/gl_matrix.html
+    pub fn rotation_matrix(angle : f32, axis : Vector) -> Mat4
+    {
+        let s = angle.sin();
+        let c = angle.cos();
+        let c_1 = 1. - c;
+
+        let x = axis.x;
+        let y = axis.y;
+        let z = axis.z;
+
+        Mat4::from_array([
+            c_1 * x * x + c     , c_1 * x * y - s * x   , c_1 * x * z + s * y, 0.,
+            c_1 * x * y + s * z , c_1 * y * y + c       , c_1 * y * z + s * x, 0.,
+            c_1 * x * z - s * y , c_1 * y * z + s * x   , c_1 * z * z + c    , 0.,
+            0.                  ,                  0.,                  0.   , 1.,
+        ])
+    }
+
+    /// Rotate current matrix
+    pub fn rotate(&mut self, angle : f32, axis : Vector)
+    {
+        *self = *self * Mat4::rotation_matrix(angle, axis);
+    }
+
+    /// Translate current matrix
+    pub fn translate(&mut self, pos : Vector)
+    {
+        *self = *self * Mat4::new_translation(pos);
+    }
+
+    /// Translation Matrix
+    pub fn new_translation(pos : Vector) -> Mat4
     {
         let mut transform = Mat4::identity();
         transform.change(3, 0, pos.x);
         transform.change(3, 1, pos.y);
         transform.change(3, 2, pos.z);
-        transform.change(3, 3, 1.);
         
         transform
     }
