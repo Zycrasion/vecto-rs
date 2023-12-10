@@ -145,7 +145,7 @@ impl Mat4
         let z = axis.z;
 
         Mat4::from_array([
-            c_1 * x * x + c     , c_1 * x * y - s * x   , c_1 * x * z + s * y, 0.,
+            c_1 * x * x + c     , c_1 * x * y - s * z   , c_1 * x * z + s * y, 0.,
             c_1 * x * y + s * z , c_1 * y * y + c       , c_1 * y * z + s * x, 0.,
             c_1 * x * z - s * y , c_1 * y * z + s * x   , c_1 * z * z + c    , 0.,
             0.                  ,                  0.,                  0.   , 1.,
