@@ -13,10 +13,14 @@ mod line;
 #[macro_use]
 pub(self) mod private_macros;
 
+#[warn(missing_docs)]
 mod vec;
 
 #[warn(missing_docs)]
 mod mat4;
+
+#[warn(missing_docs)]
+mod mat3;
 
 #[warn(missing_docs)]
 mod radians;
