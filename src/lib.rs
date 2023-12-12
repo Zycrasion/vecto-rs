@@ -39,6 +39,7 @@ pub mod trig
 pub mod linear
 {
     pub use crate::vec::*;
+    pub use crate::mat3::*;
     pub use crate::mat4::*;
 }
 
