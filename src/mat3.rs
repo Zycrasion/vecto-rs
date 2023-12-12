@@ -187,6 +187,12 @@ impl Mat3
         vec3.z = self.get_row(2).sum();
         vec3
     }
+
+    /// Scales matrix
+    pub fn scale(&mut self, vec : Vector)
+    {
+        *self = *self * vec;
+    }
 }
 
 

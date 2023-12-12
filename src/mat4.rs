@@ -60,6 +60,12 @@ impl Mat4
         }
         b
     }
+
+    /// Scales matrix
+    pub fn scale(&mut self, vec : Vector4)
+    {
+        *self = *self * vec;
+    }
     
     /// Change element at x, y (0 indexed)
     pub fn change(&mut self, x : usize, y : usize, val : f32)
