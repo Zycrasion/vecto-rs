@@ -3,6 +3,7 @@ use std::{
     ops::{self, *},
 };
 
+/// The Super Trait for all Vector types
 pub trait VectorTrait:
     Sized
     + Clone
@@ -29,12 +30,25 @@ pub trait VectorTrait:
     + MulAssign<f32>
     + DivAssign<f32>
 {
+    /// Create a new vector using 2 paremeters
     fn new2(x: f32, y: f32) -> Self;
+
+    /// Create a new vector using 3 paremeters
     fn new3(x: f32, y: f32, z: f32) -> Self;
+    
+    /// Get magnitude of vector
     fn magnitude(&self) -> f32;
+
+    /// Clamp Vector between 2 Vector Types
     fn clamp(&self, min: Self, max: Self) -> Self;
+    
+    /// Get distance between 2 Vectors
     fn dist(&self, other: &Self) -> f32;
+    
+    /// Get Normalized Vector
     fn normalized(&self) -> Self;
+
+    /// Get All fields and add them together (x+y+z)
     fn sum(&self) -> f32;
 }
 
@@ -249,7 +263,7 @@ pub struct Vector4 {
 }
 
 impl Vector4 {
-    // Create a new Vector4
+    /// Create a new Vector4
     pub fn new4(x: f32, y: f32, z: f32, w: f32) -> Self {
         Self { x, y, z, w }
     }
