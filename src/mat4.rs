@@ -202,6 +202,24 @@ impl Mat4
         mat
     }
 
+    /// Orthographic Matrix
+    /// 
+    /// https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/orthographic-projection-matrix.html
+    pub fn new_orthographic_matrix(bottom : f32, top : f32, left : f32, right : f32, near : f32, far: f32) -> Mat4
+    {
+
+        let mat = Mat4::from_array(
+            [
+                2. / (right - left), 0., 0., 0.,
+                0., 2. / (top - bottom), 0., 0.,
+                0., 0., -2. / (near - far),  0.,
+                -(right + left) / (right - left), -(top + bottom) / (top - bottom), -(far + near) / (far - near), 1.
+            ]
+        );
+        mat
+    }
+
+
     /// Creates a matrix looking at vector to from Vector from
     pub fn look_at_rh(from : &Vector, to : &Vector, up : &Vector) -> Mat4
     {
