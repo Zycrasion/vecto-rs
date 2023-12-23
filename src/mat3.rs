@@ -1,6 +1,6 @@
 use std::{ops::Mul, fmt::Display};
 
-use crate::{vec::{Vector, Vector4, VectorTrait}, trig::to_radians};
+use crate::vec::{Vector, VectorTrait};
 
 //  https://en.wikipedia.org/wiki/Transformation_matrix#Examples_in_3D_computer_graphics
 
