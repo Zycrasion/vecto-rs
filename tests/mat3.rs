@@ -1,4 +1,5 @@
 use vecto_rs::linear::Mat3;
+use vecto_rs::Float;
 
 #[test]
 fn mat3_clone()
@@ -65,7 +66,7 @@ fn mat3_is_nan()
 {
     let mut mat3 = Mat3::new();
     assert!(!mat3.is_nan());
-    mat3.change(0, 0, f64::NAN);
+    mat3.change(0, 0, Float::NAN);
     assert!(mat3.is_nan());
 }
 

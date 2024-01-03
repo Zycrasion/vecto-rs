@@ -1,5 +1,5 @@
 use std::{ops::Mul, fmt::Display};
-
+use crate::Float;
 use crate::{vec::{Vector, Vector4, VectorTrait}, trig::to_radians};
 
 //  https://en.wikipedia.org/wiki/Transformation_matrix#Examples_in_3D_computer_graphics
@@ -10,7 +10,7 @@ use crate::{vec::{Vector, Vector4, VectorTrait}, trig::to_radians};
 /// Stored As Row Major
 pub struct Mat4
 {
-    contents : [f64; 4 * 4]
+    contents : [Float; 4 * 4]
 }
 
 impl Mat4
@@ -68,14 +68,14 @@ impl Mat4
     }
     
     /// Change element at x, y (0 indexed)
-    pub fn change(&mut self, x : usize, y : usize, val : f64)
+    pub fn change(&mut self, x : usize, y : usize, val : Float)
     {
         let index = Self::index(x, y);
         self.contents[index] = val;
     }
 
     /// Get element at x, y (0 indexed)
-    pub fn get(&self, x : usize, y : usize) -> f64
+    pub fn get(&self, x : usize, y : usize) -> Float
     {
         let index = Self::index(x, y);
         self.contents[index]
@@ -121,7 +121,7 @@ impl Mat4
     }
 
     /// From Array (row major)
-    pub const fn from_array(mat : [f64; 4 * 4]) -> Mat4
+    pub const fn from_array(mat : [Float; 4 * 4]) -> Mat4
     {
         Mat4 { contents: mat }
     }
@@ -140,7 +140,7 @@ impl Mat4
     /// Create a rotation Matrix
     /// 
     /// http://www.songho.ca/opengl/gl_matrix.html
-    pub fn rotation_matrix(angle : f64, axis : Vector) -> Mat4
+    pub fn rotation_matrix(angle : Float, axis : Vector) -> Mat4
     {
         let s = angle.sin();
         let c = angle.cos();
@@ -159,7 +159,7 @@ impl Mat4
     }
 
     /// Rotate current matrix
-    pub fn rotate(&mut self, angle : f64, axis : Vector)
+    pub fn rotate(&mut self, angle : Float, axis : Vector)
     {
         *self = *self * Mat4::rotation_matrix(angle, axis);
     }
@@ -186,7 +186,7 @@ impl Mat4
     /// fov is in degrees
     /// 
     /// https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/building-basic-perspective-projection-matrix.html
-    pub fn new_perspective_matrix(width: f64, height: f64, fov : f64, near : f64, far : f64) -> Mat4
+    pub fn new_perspective_matrix(width: Float, height: Float, fov : Float, near : Float, far : Float) -> Mat4
     {
         let aspect = width / height;
         let z_range = near - far;
@@ -205,7 +205,7 @@ impl Mat4
     /// Orthographic Matrix
     /// 
     /// https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/orthographic-projection-matrix.html
-    pub fn new_orthographic_matrix(bottom : f64, top : f64, left : f64, right : f64, near : f64, far: f64) -> Mat4
+    pub fn new_orthographic_matrix(bottom : Float, top : Float, left : Float, right : Float, near : Float, far: Float) -> Mat4
     {
 
         let mat = Mat4::from_array(
@@ -238,7 +238,7 @@ impl Mat4
     }
 
     /// get contents in array form
-    pub fn get_contents(&self) -> [f64; 4 * 4]
+    pub fn get_contents(&self) -> [Float; 4 * 4]
     {
         self.contents
     }

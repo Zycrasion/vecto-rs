@@ -36,15 +36,15 @@ macro_rules! vec_vec_assign_op
 
 #[doc(hidden)]
 #[macro_export]
-macro_rules! vec_f64_op
+macro_rules! vec_Float_op
 {
     ($name:ident, $method:ident, $op:tt) =>
     {
-        impl ops::$name<f64> for Vector
+        impl ops::$name<Float> for Vector
         {
             type Output = Vector;
 
-            fn $method(self, rhs : f64) -> Self::Output
+            fn $method(self, rhs : Float) -> Self::Output
             {
                 Vector::new3(self.x $op rhs, self.y $op rhs, self.z $op rhs)
             }
@@ -54,13 +54,13 @@ macro_rules! vec_f64_op
 
 #[doc(hidden)]
 #[macro_export]
-macro_rules! vec_f64_assign_op
+macro_rules! vec_Float_assign_op
 {
     ($name:ident, $method:ident, $op:tt) =>
     {
-        impl ops::$name<f64> for Vector
+        impl ops::$name<Float> for Vector
         {
-            fn $method(&mut self, rhs : f64)
+            fn $method(&mut self, rhs : Float)
             {
                 self.x $op rhs;
                 self.y $op rhs;
@@ -109,15 +109,15 @@ macro_rules! vec4_vec_assign_op
 
 #[doc(hidden)]
 #[macro_export]
-macro_rules! vec4_f64_op
+macro_rules! vec4_Float_op
 {
     ($name:ident, $method:ident, $op:tt) =>
     {
-        impl ops::$name<f64> for Vector4
+        impl ops::$name<Float> for Vector4
         {
             type Output = Vector4;
 
-            fn $method(self, rhs : f64) -> Self::Output
+            fn $method(self, rhs : Float) -> Self::Output
             {
                 Vector4::new4(self.x $op rhs, self.y $op rhs, self.z $op rhs, self.w $op rhs)
             }
@@ -127,13 +127,13 @@ macro_rules! vec4_f64_op
 
 #[doc(hidden)]
 #[macro_export]
-macro_rules! vec4_f64_assign_op
+macro_rules! vec4_Float_assign_op
 {
     ($name:ident, $method:ident, $op:tt) =>
     {
-        impl ops::$name<f64> for Vector4
+        impl ops::$name<Float> for Vector4
         {
-            fn $method(&mut self, rhs : f64)
+            fn $method(&mut self, rhs : Float)
             {
                 self.x $op rhs;
                 self.y $op rhs;

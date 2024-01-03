@@ -2,6 +2,7 @@ use std::{
     fmt::{Debug, Display},
     ops::{self, *},
 };
+use crate::Float;
 
 /// The Super Trait for all Vector types
 pub trait VectorTrait:
@@ -17,43 +18,43 @@ pub trait VectorTrait:
     + Sub<Self>
     + Mul<Self>
     + Div<Self>
-    + Add<f64>
-    + Sub<f64>
-    + Mul<f64>
-    + Div<f64>
+    + Add<Float>
+    + Sub<Float>
+    + Mul<Float>
+    + Div<Float>
     + AddAssign<Self>
     + SubAssign<Self>
     + MulAssign<Self>
     + DivAssign<Self>
-    + AddAssign<f64>
-    + SubAssign<f64>
-    + MulAssign<f64>
-    + DivAssign<f64>
+    + AddAssign<Float>
+    + SubAssign<Float>
+    + MulAssign<Float>
+    + DivAssign<Float>
 {
     /// Create a new vector using 2 paremeters
-    fn new2(x: f64, y: f64) -> Self;
+    fn new2(x: Float, y: Float) -> Self;
 
     /// Create a new vector using 3 paremeters
-    fn new3(x: f64, y: f64, z: f64) -> Self;
+    fn new3(x: Float, y: Float, z: Float) -> Self;
     
     /// Get magnitude of vector
-    fn magnitude(&self) -> f64;
+    fn magnitude(&self) -> Float;
 
     /// Clamp Vector between 2 Vector Types
     fn clamp(&self, min: Self, max: Self) -> Self;
     
     /// Get distance between 2 Vectors
-    fn dist(&self, other: &Self) -> f64;
+    fn dist(&self, other: &Self) -> Float;
     
     /// Get Normalized Vector
     fn normalized(&self) -> Self;
 
     /// Get All fields and add them together (x+y+z)
-    fn sum(&self) -> f64;
+    fn sum(&self) -> Float;
 }
 
 /// Vector Shorthand
-pub fn vector3(x: f64, y: f64, z: f64) -> Vector {
+pub fn vector3(x: Float, y: Float, z: Float) -> Vector {
     Vector::new3(x, y, z)
 }
 
@@ -61,13 +62,13 @@ pub fn vector3(x: f64, y: f64, z: f64) -> Vector {
 #[derive(Clone, Copy)]
 pub struct Vector {
     /// X Coordinate of Vector
-    pub x: f64,
+    pub x: Float,
 
     /// Y Coordinate of Vector
-    pub y: f64,
+    pub y: Float,
 
     /// Z Coordinate of Vector
-    pub z: f64,
+    pub z: Float,
 }
 
 impl Vector
@@ -79,7 +80,7 @@ impl Vector
     }
 
     /// Rotate around the x axis
-    pub fn rotate_x(&mut self, angle : f64)
+    pub fn rotate_x(&mut self, angle : Float)
     {
         let cos = angle.cos();
         let sin = angle.sin();
@@ -91,7 +92,7 @@ impl Vector
     }
 
     /// Rotate around the y axis
-    pub fn rotate_y(&mut self, angle : f64)
+    pub fn rotate_y(&mut self, angle : Float)
     {
         let cos = angle.cos();
         let sin = angle.sin();
@@ -103,7 +104,7 @@ impl Vector
     }
     
     /// Rotate around the z axis
-    pub fn rotate_z(&mut self, angle : f64)
+    pub fn rotate_z(&mut self, angle : Float)
     {
         let cos = angle.cos();
         let sin = angle.sin();
@@ -117,17 +118,17 @@ impl Vector
 
 impl VectorTrait for Vector {
     /// Create a Vector2
-    fn new2(x: f64, y: f64) -> Self {
+    fn new2(x: Float, y: Float) -> Self {
         Self { x, y, z: 0.0 }
     }
 
     /// Create a Vector3
-    fn new3(x: f64, y: f64, z: f64) -> Self {
+    fn new3(x: Float, y: Float, z: Float) -> Self {
         Self { x, y, z }
     }
 
     /// Get Length of Vector
-    fn magnitude(&self) -> f64 {
+    fn magnitude(&self) -> Float {
         (self.x.powi(2) + self.y.powi(2) + self.z.powi(2)).sqrt()
     }
 
@@ -141,7 +142,7 @@ impl VectorTrait for Vector {
     }
 
     /// Distance Between 2 Vectors
-    fn dist(&self, other: &Self) -> f64 {
+    fn dist(&self, other: &Self) -> Float {
         (*other - *self).magnitude().abs()
     }
 
@@ -151,7 +152,7 @@ impl VectorTrait for Vector {
     }
 
     /// Get Sum (all parts added together)
-    fn sum(&self) -> f64 {
+    fn sum(&self) -> Float {
         self.x + self.y + self.z
     }
 }
@@ -212,36 +213,36 @@ vec_vec_assign_op!(SubAssign, sub_assign, -=);
 vec_vec_assign_op!(MulAssign, mul_assign, *=);
 vec_vec_assign_op!(DivAssign, div_assign, /=);
 
-vec_f64_op!(Add, add, +);
-vec_f64_op!(Sub, sub, -);
-vec_f64_op!(Mul, mul, *);
-vec_f64_op!(Div, div, /);
+vec_Float_op!(Add, add, +);
+vec_Float_op!(Sub, sub, -);
+vec_Float_op!(Mul, mul, *);
+vec_Float_op!(Div, div, /);
 
-vec_f64_assign_op!(AddAssign, add_assign, +=);
-vec_f64_assign_op!(SubAssign, sub_assign, -=);
-vec_f64_assign_op!(MulAssign, mul_assign, *=);
-vec_f64_assign_op!(DivAssign, div_assign, /=);
+vec_Float_assign_op!(AddAssign, add_assign, +=);
+vec_Float_assign_op!(SubAssign, sub_assign, -=);
+vec_Float_assign_op!(MulAssign, mul_assign, *=);
+vec_Float_assign_op!(DivAssign, div_assign, /=);
 
-impl From<(f64, f64)> for Vector {
-    fn from(value: (f64, f64)) -> Self {
+impl From<(Float, Float)> for Vector {
+    fn from(value: (Float, Float)) -> Self {
         Self::new2(value.0, value.1)
     }
 }
 
-impl Into<(f64, f64)> for Vector {
-    fn into(self) -> (f64, f64) {
+impl Into<(Float, Float)> for Vector {
+    fn into(self) -> (Float, Float) {
         (self.x, self.y)
     }
 }
 
-impl From<(f64, f64, f64)> for Vector {
-    fn from(value: (f64, f64, f64)) -> Self {
+impl From<(Float, Float, Float)> for Vector {
+    fn from(value: (Float, Float, Float)) -> Self {
         Self::new3(value.0, value.1, value.2)
     }
 }
 
-impl Into<(f64, f64, f64)> for Vector {
-    fn into(self) -> (f64, f64, f64) {
+impl Into<(Float, Float, Float)> for Vector {
+    fn into(self) -> (Float, Float, Float) {
         (self.x, self.y, self.z)
     }
 }
@@ -250,28 +251,28 @@ impl Into<(f64, f64, f64)> for Vector {
 /// Vector 4
 pub struct Vector4 {
     /// X Coordinate of Vector
-    pub x: f64,
+    pub x: Float,
 
     /// Y Coordinate of Vector
-    pub y: f64,
+    pub y: Float,
 
     /// Z Coordinate of Vector
-    pub z: f64,
+    pub z: Float,
 
     /// W Coordinate of Vector
-    pub w: f64,
+    pub w: Float,
 }
 
 impl Vector4 {
     /// Create a new Vector4
-    pub fn new4(x: f64, y: f64, z: f64, w: f64) -> Self {
+    pub fn new4(x: Float, y: Float, z: Float, w: Float) -> Self {
         Self { x, y, z, w }
     }
 }
 
 impl VectorTrait for Vector4 {
     /// Create a Vector2
-    fn new2(x: f64, y: f64) -> Self {
+    fn new2(x: Float, y: Float) -> Self {
         Self {
             x,
             y,
@@ -281,12 +282,12 @@ impl VectorTrait for Vector4 {
     }
 
     /// Create a Vector3
-    fn new3(x: f64, y: f64, z: f64) -> Self {
+    fn new3(x: Float, y: Float, z: Float) -> Self {
         Self { x, y, z, w: 0.0 }
     }
 
     /// Get Length of Vector
-    fn magnitude(&self) -> f64 {
+    fn magnitude(&self) -> Float {
         (self.x.powi(2) + self.y.powi(2) + self.z.powi(2) + self.w.powi(2)).sqrt()
     }
 
@@ -301,7 +302,7 @@ impl VectorTrait for Vector4 {
     }
 
     /// Distance Between 2 Vectors
-    fn dist(&self, other: &Self) -> f64 {
+    fn dist(&self, other: &Self) -> Float {
         (*other - *self).magnitude().abs()
     }
 
@@ -311,7 +312,7 @@ impl VectorTrait for Vector4 {
     }
 
     /// Get Sum (all parts added together)
-    fn sum(&self) -> f64 {
+    fn sum(&self) -> Float {
         self.x + self.y + self.z + self.w
     }
 }
@@ -379,12 +380,12 @@ vec4_vec_assign_op!(SubAssign, sub_assign, -=);
 vec4_vec_assign_op!(MulAssign, mul_assign, *=);
 vec4_vec_assign_op!(DivAssign, div_assign, /=);
 
-vec4_f64_op!(Add, add, +);
-vec4_f64_op!(Sub, sub, -);
-vec4_f64_op!(Mul, mul, *);
-vec4_f64_op!(Div, div, /);
+vec4_Float_op!(Add, add, +);
+vec4_Float_op!(Sub, sub, -);
+vec4_Float_op!(Mul, mul, *);
+vec4_Float_op!(Div, div, /);
 
-vec4_f64_assign_op!(AddAssign, add_assign, +=);
-vec4_f64_assign_op!(SubAssign, sub_assign, -=);
-vec4_f64_assign_op!(MulAssign, mul_assign, *=);
-vec4_f64_assign_op!(DivAssign, div_assign, /=);
+vec4_Float_assign_op!(AddAssign, add_assign, +=);
+vec4_Float_assign_op!(SubAssign, sub_assign, -=);
+vec4_Float_assign_op!(MulAssign, mul_assign, *=);
+vec4_Float_assign_op!(DivAssign, div_assign, /=);

@@ -1,4 +1,5 @@
 use std::{ops::Mul, fmt::Display};
+use crate::Float;
 
 use crate::vec::{Vector, VectorTrait};
 
@@ -10,7 +11,7 @@ use crate::vec::{Vector, VectorTrait};
 /// Stored As Row Major
 pub struct Mat3
 {
-    contents : [f64; 3 * 3]
+    contents : [Float; 3 * 3]
 }
 
 impl Mat3
@@ -62,14 +63,14 @@ impl Mat3
     }
     
     /// Change element at x, y (0 indexed)
-    pub fn change(&mut self, x : usize, y : usize, val : f64)
+    pub fn change(&mut self, x : usize, y : usize, val : Float)
     {
         let index = Self::index(x, y);
         self.contents[index] = val;
     }
 
     /// Get element at x, y (0 indexed)
-    pub fn get(&self, x : usize, y : usize) -> f64
+    pub fn get(&self, x : usize, y : usize) -> Float
     {
         let index = Self::index(x, y);
         self.contents[index]
@@ -115,7 +116,7 @@ impl Mat3
     }
 
     /// From Array (row major)
-    pub const fn from_array(mat : [f64; 3 * 3]) -> Mat3
+    pub const fn from_array(mat : [Float; 3 * 3]) -> Mat3
     {
         Mat3 { contents: mat }
     }
@@ -133,7 +134,7 @@ impl Mat3
     /// Create a rotation Matrix
     /// 
     /// http://www.songho.ca/opengl/gl_matrix.html
-    pub fn rotation_matrix(angle : f64, axis : Vector) -> Mat3
+    pub fn rotation_matrix(angle : Float, axis : Vector) -> Mat3
     {
         let s = angle.sin();
         let c = angle.cos();
@@ -151,7 +152,7 @@ impl Mat3
     }
 
     /// Rotate current matrix
-    pub fn rotate(&mut self, angle : f64, axis : Vector)
+    pub fn rotate(&mut self, angle : Float, axis : Vector)
     {
         *self = *self * Mat3::rotation_matrix(angle, axis);
     }
@@ -173,7 +174,7 @@ impl Mat3
     }
 
     /// get contents in array form
-    pub fn get_contents(&self) -> [f64; 3 * 3]
+    pub fn get_contents(&self) -> [Float; 3 * 3]
     {
         self.contents
     }

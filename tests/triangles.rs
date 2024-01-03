@@ -1,4 +1,5 @@
 use vecto_rs::{trig::{Triangle, TriangleEdge}, linear::*};
+use vecto_rs::{Float, PI};
 
 fn tri_test_inside(tri : Triangle, point : Vector, expected : bool)
 {
@@ -11,7 +12,7 @@ fn tri_test_inside1()
     tri_test_inside(Triangle::new(Vector::new2(0.0,0.0), Vector::new2(0.0,10.0), Vector::new2(10.0,0.0)), Vector::new2(5.0, 2.5), true);
 }
 
-fn tri_test_barycentric(tri : Triangle, point : Vector, expected : (f64, f64, f64))
+fn tri_test_barycentric(tri : Triangle, point : Vector, expected : (Float, Float, Float))
 {
     assert_eq!(tri.barycentric_coordinates(point).unwrap(), expected)
 }

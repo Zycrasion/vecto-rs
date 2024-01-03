@@ -1,4 +1,5 @@
 use crate::{linear::Vector, trig::Line, vec::VectorTrait};
+use crate::Float;
 
 /// Triangle Edge Descriptor
 pub enum TriangleEdge
@@ -40,7 +41,7 @@ impl Triangle
     }
 
     /// Get length of edge
-    pub fn get_edge(&self, edge : TriangleEdge) -> f64
+    pub fn get_edge(&self, edge : TriangleEdge) -> Float
     {
         match edge
         {
@@ -63,7 +64,7 @@ impl Triangle
     }
 
     /// Calculate barycentric coordinates
-    pub fn barycentric_coordinates(&self, point : Vector) -> Option<(f64, f64, f64)>
+    pub fn barycentric_coordinates(&self, point : Vector) -> Option<(Float, Float, Float)>
     {
         let v0 = self.a.into();
         let v1 = self.b.into();

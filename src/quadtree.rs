@@ -1,6 +1,7 @@
 use crate::linear::Vector;
 use crate::spatial::AABB;
 use crate::vec::VectorTrait;
+use crate::Float;
 
 pub type QuadValue<T> = Box<(Vector, T)>;
 
@@ -8,10 +9,12 @@ pub type QuadValue<T> = Box<(Vector, T)>;
 /// ```
 /// use vecto_rs::linear::*;
 /// use vecto_rs::spatial::*;
+/// use vecto_rs::*;
+/// 
 /// let mut tree : QuadTree<bool> = QuadTree::new(0.0, 0.0, 500.0, 500.0, 80, 0.0, 10);  
 /// for i in 0..100
 /// {
-///     tree.add((i % 2) == 0, Vector::new2((i % 500) as f64, (i % 500) as f64));
+///     tree.add((i % 2) == 0, Vector::new2((i % 500) as Float, (i % 500) as Float));
 /// }
 /// let cell = tree.query(Vector::new2(230.0, 230.0));
 /// println!("{}", cell.len());
@@ -21,7 +24,7 @@ pub type QuadValue<T> = Box<(Vector, T)>;
 /// }
 /// for i in 0..100
 /// {
-///     tree.remove(Vector::new2((i % 500) as f64, (i % 500) as f64));
+///     tree.remove(Vector::new2((i % 500) as Float, (i % 500) as Float));
 /// }
 // tree.prune();
 /// ```
@@ -33,7 +36,7 @@ pub struct QuadTree<T : Clone>
     max_values : usize,
     max_depth : u32,
     values : Vec<QuadValue<T>>,
-    border_size : f64,
+    border_size : Float,
     tr : Option<Box<QuadTree<T>>>,
     tl : Option<Box<QuadTree<T>>>,
     br : Option<Box<QuadTree<T>>>,
@@ -53,7 +56,7 @@ impl<T: Clone + PartialEq> QuadTree<T>
     /// border_size : Size of Shared Space Between QuadTree Branches/ Leaves
     /// 
     /// max_depth : Maximum subdivision
-    pub fn new(x : f64, y : f64, w : f64, h : f64, max_values: usize, border_size: f64, max_depth : u32) -> Self
+    pub fn new(x : Float, y : Float, w : Float, h : Float, max_values: usize, border_size: Float, max_depth : u32) -> Self
     {
         assert!(max_values > 0);
 
@@ -72,7 +75,7 @@ impl<T: Clone + PartialEq> QuadTree<T>
         }
     }
 
-    fn from_bb(start : Vector, size : Vector, max_values: usize, border_size : f64, max_depth : u32) -> Self
+    fn from_bb(start : Vector, size : Vector, max_values: usize, border_size : Float, max_depth : u32) -> Self
     {
         QuadTree::new(start.x, start.y, size.x, size.y, max_values, border_size, max_depth)
     }
