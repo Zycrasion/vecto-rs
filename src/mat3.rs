@@ -4,7 +4,7 @@ use crate::vec::{Vector, VectorTrait};
 
 //  https://en.wikipedia.org/wiki/Transformation_matrix#Examples_in_3D_computer_graphics
 
-#[derive(Copy, Clone, Debug, Default, PartialEq, PartialOrd)]
+#[derive(Copy, Clone, Debug, Default, PartialEq)]
 /// Matrice of order 3 x 3
 /// 
 /// Stored As Row Major
