@@ -11,7 +11,7 @@ fn tri_test_inside1()
     tri_test_inside(Triangle::new(Vector::new2(0.0,0.0), Vector::new2(0.0,10.0), Vector::new2(10.0,0.0)), Vector::new2(5.0, 2.5), true);
 }
 
-fn tri_test_barycentric(tri : Triangle, point : Vector, expected : (f32, f32, f32))
+fn tri_test_barycentric(tri : Triangle, point : Vector, expected : (f64, f64, f64))
 {
     assert_eq!(tri.barycentric_coordinates(point).unwrap(), expected)
 }

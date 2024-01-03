@@ -1,11 +1,11 @@
-use std::f32::consts::PI;
+use std::f64::consts::PI;
 
 use vecto_rs::trig::{to_degrees, to_radians};
 
 #[test]
 pub fn radians_to_degrees()
 {
-    assert_eq!(to_degrees(1.), 57.295776);
+    assert_eq!(to_degrees(1.), 57.29577951308232);
     assert_eq!(to_degrees(PI), 180.);
     assert_eq!(to_degrees(2. * PI), 360.);
 }

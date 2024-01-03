@@ -65,7 +65,7 @@ fn mat3_is_nan()
 {
     let mut mat3 = Mat3::new();
     assert!(!mat3.is_nan());
-    mat3.change(0, 0, f32::NAN);
+    mat3.change(0, 0, f64::NAN);
     assert!(mat3.is_nan());
 }
 

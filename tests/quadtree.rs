@@ -7,7 +7,7 @@ fn quadtree_simple()
     
     for i in 0..100
     {
-        tree.add((i % 2) == 0, Vector::new2((i % 500) as f32, (i % 500) as f32));
+        tree.add((i % 2) == 0, Vector::new2((i % 500) as f64, (i % 500) as f64));
     }
 
     let cell = tree.query(Vector::new2(230.0, 230.0));
@@ -20,7 +20,7 @@ fn quadtree_simple()
 
     for i in 0..100
     {
-        tree.remove(Vector::new2((i % 500) as f32, (i % 500) as f32));
+        tree.remove(Vector::new2((i % 500) as f64, (i % 500) as f64));
     }
 
     tree.prune();

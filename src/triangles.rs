@@ -40,7 +40,7 @@ impl Triangle
     }
 
     /// Get length of edge
-    pub fn get_edge(&self, edge : TriangleEdge) -> f32
+    pub fn get_edge(&self, edge : TriangleEdge) -> f64
     {
         match edge
         {
@@ -63,7 +63,7 @@ impl Triangle
     }
 
     /// Calculate barycentric coordinates
-    pub fn barycentric_coordinates(&self, point : Vector) -> Option<(f32, f32, f32)>
+    pub fn barycentric_coordinates(&self, point : Vector) -> Option<(f64, f64, f64)>
     {
         let v0 = self.a.into();
         let v1 = self.b.into();

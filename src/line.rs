@@ -9,7 +9,7 @@ impl Line
     /// 0 is on line
     /// -1 is on one side
     /// 1 is on the other
-    pub fn edge_function(&self, point : Vector) -> f32
+    pub fn edge_function(&self, point : Vector) -> f64
     {
         (point.x - self.0.x) * (self.1.y - self.0.y) - (point.y - self.0.y) * (self.1.x - self.0.x)
     }
