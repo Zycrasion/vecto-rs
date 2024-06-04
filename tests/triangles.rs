@@ -1,5 +1,5 @@
 use vecto_rs::{trig::{Triangle, TriangleEdge}, linear::*};
-use vecto_rs::{Float, PI};
+use vecto_rs::Float;
 
 fn tri_test_inside(tri : Triangle, point : Vector, expected : bool)
 {

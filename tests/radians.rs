@@ -1,4 +1,4 @@
-use vecto_rs::{Float, PI};
+use vecto_rs::PI;
 
 use vecto_rs::trig::{to_degrees, to_radians};
 

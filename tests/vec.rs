@@ -1,5 +1,5 @@
 use vecto_rs::linear::*;
-use vecto_rs::{Float, PI};
+use vecto_rs::Float;
 
 /// https://codinglab.huostravelblog.com/programming/random-number-generator/index.php
 const NUMBERS : [Float; 64] = [
@@ -80,10 +80,10 @@ vec3_test!(subtraction_test_vec3, -);
 vec3_test!(multiplication_test_vec3, *);
 vec3_test!(division_test_vec3, /);
 
-vec3_test_Float!(addition_test_Float, +);
-vec3_test_Float!(subtraction_test_Float, -);
-vec3_test_Float!(multiplication_test_Float, *);
-vec3_test_Float!(division_test_Float, /);
+vec3_test_Float!(addition_test_float, +);
+vec3_test_Float!(subtraction_test_float, -);
+vec3_test_Float!(multiplication_test_float, *);
+vec3_test_Float!(division_test_float, /);
 
 #[test]
 fn new2()
