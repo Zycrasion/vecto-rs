@@ -72,6 +72,65 @@ impl QuadTree
         }
     }
 
+    pub fn query(&mut self, v : &Vector) -> Result<Vec<(usize, Vector)>, ()>
+    {
+        let mut normalised : Vector;
+        let mut current_size = self.bb.size;
+        let mut current_midpoint = self.midpoint;
+        let mut currently_peeked_branch = &mut self.root;
+        let instant = Instant::now();
+        loop
+        {
+            if instant.elapsed() >= Duration::from_secs(5)
+            {
+                break;
+            }
+            if currently_peeked_branch.branches.is_none()
+            {
+                return Ok(currently_peeked_branch.contents.clone());
+            }
+            
+            normalised = *v - self.midpoint;
+            match (normalised.x.is_sign_positive(), normalised.y.is_sign_positive())
+            {
+                (true, true) => {
+                    current_midpoint += current_size / 2.;
+                    current_size /= 2.;
+                    if currently_peeked_branch.branches.is_some()
+                    {
+                        currently_peeked_branch = &mut currently_peeked_branch.branches.as_mut().unwrap().0;
+                    }
+                },
+                (true, false) => {
+                    current_midpoint += current_size / Vector::new2(2., -2.);
+                    current_size /= 2.;
+                    if currently_peeked_branch.branches.is_some()
+                    {
+                        currently_peeked_branch = &mut currently_peeked_branch.branches.as_mut().unwrap().1;
+                    }
+                },
+                (false, false) => {
+                    current_midpoint += self.half_size / -2.;
+                    current_size /= 2.;
+                    if currently_peeked_branch.branches.is_some()
+                    {
+                        currently_peeked_branch = &mut currently_peeked_branch.branches.as_mut().unwrap().2;
+                    }
+                }
+                (false, true) => {
+                    current_midpoint += self.half_size / Vector::new2(-2., 2.);
+                    current_size /= 2.;
+                    if currently_peeked_branch.branches.is_some()
+                    {
+                        currently_peeked_branch = &mut currently_peeked_branch.branches.as_mut().unwrap().3;
+                    }
+                },
+            }
+        }
+
+        Err(())
+    }
+
     pub fn insert(&mut self, i : usize, v : &Vector) -> Result<(), ()>
     {
         if !self.bb.point_inside(*v)
