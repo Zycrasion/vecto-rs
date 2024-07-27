@@ -80,7 +80,7 @@ impl Vector
     }
 
     /// Rotate around the x axis
-    pub fn rotate_x(&mut self, angle : Float)
+    pub fn rotate_x(&mut self, angle : Float) -> Self
     {
         let cos = angle.cos();
         let sin = angle.sin();
@@ -89,10 +89,11 @@ impl Vector
         
         self.y = y * cos - z * sin;
         self.z = y * sin + z * cos;
+        *self
     }
 
     /// Rotate around the y axis
-    pub fn rotate_y(&mut self, angle : Float)
+    pub fn rotate_y(&mut self, angle : Float)  -> Self
     {
         let cos = angle.cos();
         let sin = angle.sin();
@@ -101,10 +102,11 @@ impl Vector
         
         self.x =  x * cos + z * sin;
         self.z = -x * sin + z * cos;
+        *self
     }
     
     /// Rotate around the z axis
-    pub fn rotate_z(&mut self, angle : Float)
+    pub fn rotate_z(&mut self, angle : Float)  -> Self
     {
         let cos = angle.cos();
         let sin = angle.sin();
@@ -113,6 +115,7 @@ impl Vector
         
         self.x = x * cos - y * sin;
         self.y = x * sin + y * cos;
+        *self
     }
 }
 
