@@ -9,7 +9,7 @@ use crate::linear::Vector;
 /// use vecto_rs::linear::*;
 /// let axis_box = AABB::new(Vector::new2(0.0,0.0), Vector::new2(1.0, 1.0));
 /// ```
-#[derive(Clone, Copy, Default, PartialEq)]
+#[derive(Clone, Copy, Default, PartialEq, Debug)]
 pub struct AABB
 {
     /// The Top Left Corner

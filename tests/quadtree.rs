@@ -9,12 +9,19 @@ fn quadtree_simple()
     
     for i in 0..100
     {
-        tree.insert(i, &Vector::new2((i % 500) as Float, (i % 500) as Float));
+        tree.insert(i, &Vector::new2(i as f32, 0.)).expect("Error inserting indice");
     }
 
-    // let cell = tree.query(Vector::new2(230.0, 230.0));
+    let cell = tree.query(&Vector::new2(50.0, 0.0)).unwrap();
 
-    // println!("{}", cell.len());
+    assert_eq!(cell.len(), 100);
+    
+    tree.insert(100, &Vector::new2(0., 1.)).expect("Error inserting indice");
+
+    let cell = tree.query(&Vector::new2(0.0, 0.0)).unwrap();
+    println!("{:#?}", cell);
+    assert_eq!(cell.len(), 64);
+
     // for c in cell
     // {
     //     println!("{}: {}", c.0, c.1);
