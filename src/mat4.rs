@@ -173,11 +173,12 @@ impl Mat4
     /// Translation Matrix
     pub fn new_translation(pos : Vector) -> Mat4
     {
-        let mut transform = Mat4::identity();
-        transform.change(0, 0, pos.x);
-        transform.change(1, 1, pos.y);
-        transform.change(2, 2, pos.z);
-        transform.change(3, 3, 1.0);
+        let transform = Mat4::from_array([
+            1., 0., 0., 0.,
+            0., 1., 0., 0.,
+            0., 0., 1., 0.,
+            pos.x, pos.y, pos.z, 1., 
+        ]);
         
         transform
     }
