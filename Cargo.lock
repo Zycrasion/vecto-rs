@@ -4,4 +4,4 @@ version = 3
 
 [[package]]
 name = "vecto-rs"
-version = "2.4.0"
+version = "2.4.1"
