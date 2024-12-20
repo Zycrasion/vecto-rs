@@ -174,9 +174,10 @@ impl Mat4
     pub fn new_translation(pos : Vector) -> Mat4
     {
         let mut transform = Mat4::identity();
-        transform.change(3, 0, pos.x);
-        transform.change(3, 1, pos.y);
-        transform.change(3, 2, pos.z);
+        transform.change(0, 0, pos.x);
+        transform.change(1, 1, pos.y);
+        transform.change(2, 2, pos.z);
+        transform.change(3, 3, 1.0);
         
         transform
     }
