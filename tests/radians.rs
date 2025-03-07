@@ -1,6 +1,5 @@
-use vecto_rs::PI;
-
-use vecto_rs::trig::{to_degrees, to_radians};
+use std::f32::consts::PI;
+pub use vecto_rs::prelude::*;
 
 #[test]
 pub fn radians_to_degrees()

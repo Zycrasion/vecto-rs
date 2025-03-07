@@ -1,7 +1,5 @@
-use crate::linear::Vector;
-use crate::spatial::AABB;
+use crate::prelude::*;
 use crate::vec::VectorTrait;
-use crate::Float;
 
 pub type QuadValue<T> = Box<(Vector, T)>;
 

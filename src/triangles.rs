@@ -1,5 +1,4 @@
-use crate::{linear::Vector, trig::Line, vec::VectorTrait};
-use crate::Float;
+pub use crate::prelude::*;
 
 /// Triangle Edge Descriptor
 pub enum TriangleEdge

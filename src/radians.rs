@@ -1,4 +1,4 @@
-use crate::{Float, PI};
+use crate::prelude::*;
 
 /// degrees to radians
 pub fn to_radians(deg : Float) -> Float

@@ -2,8 +2,7 @@ use std::{
     fmt::{Debug, Display},
     ops::{self, *},
 };
-use crate::Float;
-
+use crate::prelude::*;
 /// The Super Trait for all Vector types
 pub trait VectorTrait:
     Sized

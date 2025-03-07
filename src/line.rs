@@ -1,5 +1,4 @@
-use crate::linear::Vector;
-use crate::Float;
+use crate::prelude::*;
 
 /// A structure describing a line between 2 points
 pub struct Line(pub Vector, pub Vector);

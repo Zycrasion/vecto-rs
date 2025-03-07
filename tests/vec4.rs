@@ -1,5 +1,4 @@
-use vecto_rs::linear::{Vector4, VectorTrait};
-use vecto_rs::Float;
+use vecto_rs::prelude::*;
 
 /// https://codinglab.huostravelblog.com/programming/random-number-generator/index.php
 const NUMBERS : [Float; 64] = [

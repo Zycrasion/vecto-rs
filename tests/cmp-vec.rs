@@ -1,4 +1,4 @@
-use vecto_rs::linear::*;
+pub use vecto_rs::prelude::*;
 
 #[test]
 fn vector_cmp()

@@ -1,4 +1,4 @@
-use crate::linear::Vector;
+use crate::prelude::*;
 
 /// An Axis Aligned Bounding Box
 /// 

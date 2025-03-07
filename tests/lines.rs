@@ -1,4 +1,4 @@
-use vecto_rs::{linear::*, trig::Line};
+pub use vecto_rs::prelude::*;
 
 #[test]
 fn edge()

@@ -1,5 +1,4 @@
-use vecto_rs::{spatial::QuadTree, linear::*};
-use vecto_rs::Float;
+pub use vecto_rs::prelude::*;
 
 #[test]
 fn quadtree_simple()
