@@ -33,12 +33,6 @@ pub(self) mod private_macros;
 mod vec;
 
 #[warn(missing_docs)]
-mod mat4;
-
-#[warn(missing_docs)]
-mod mat3;
-
-#[warn(missing_docs)]
 mod radians;
 
 #[warn(missing_docs)]
@@ -55,8 +49,6 @@ pub mod trig
 pub mod linear
 {
     pub use crate::vec::*;
-    pub use crate::mat3::*;
-    pub use crate::mat4::*;
 }
 
 #[warn(missing_docs)]
