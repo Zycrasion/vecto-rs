@@ -1,6 +1,13 @@
 # Vecto-rs
 This is a math library where i will dump all my data types.
 
+## BRANCH INFORMATION
+In this branch, I'm going to fix everything I HATE about this library.
+
+Broken Matrices, Stupid vector trait, Float feature.
+
+Everything.
+
 ## Current Status
 Stable. All breaking changes will change the Major version, however i don't think this should have any in the future
 
