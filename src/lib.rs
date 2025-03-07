@@ -12,4 +12,4 @@ macro_rules! import {
     };
 }
 
-import!(bounding_box quadtree triangles line vec radians types);
+import!(bounding_box vec types);
