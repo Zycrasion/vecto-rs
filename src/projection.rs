@@ -94,3 +94,22 @@ pub struct PerspectiveProjection<N> {
     pub near : N,
     pub far : N,
 }
+
+impl<N : BaseNumber> PerspectiveProjection<N>
+{
+    pub fn new(
+        fovy : Angle<N>,
+        aspect : N,
+        near : N,
+        far : N, 
+    ) -> Self
+    {
+        Self
+        {
+            fovy,
+            aspect,
+            near,
+            far,
+        }
+    }
+}
