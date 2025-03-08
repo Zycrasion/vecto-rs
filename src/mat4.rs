@@ -1,3 +1,5 @@
+use std::ops::Neg;
+
 use crate::types::{BaseFloat, BaseNumber};
 
 #[repr(C)]
@@ -35,7 +37,7 @@ impl<N: Copy> Mat4<N> {
     }
 }
 
-impl<N: BaseFloat> Mat4<N> {
+impl<N: BaseNumber> Mat4<N> {
     pub fn identity() -> Mat4<N> {
         Self {
             contents: [
@@ -58,8 +60,11 @@ impl<N: BaseFloat> Mat4<N> {
             ],
         }
     }
+}
 
+impl<N: BaseNumber + Neg<Output = N>> Mat4<N> {
     pub fn inverse(&self) -> Option<Mat4<N>> {
+        // https://stackoverflow.com/a/1148405
         let m = self.contents;
         let mut inv = [N::zero(); 16];
 
@@ -144,15 +149,13 @@ impl<N: BaseFloat> Mat4<N> {
 
         let det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
 
-        if det == N::zero()
-        {
+        if det == N::zero() {
             return None;
         }
 
         let det = N::one() / det;
 
-        for i in 0..16
-        {
+        for i in 0..16 {
             inv[i] *= det;
         }
 
