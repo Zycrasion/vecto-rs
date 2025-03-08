@@ -137,7 +137,7 @@ impl<N: BaseFloat> PerspectiveProjection<N> {
             
             N::zero(), // 0 3
             N::zero(), // 1 3
-            self.far * self.near * range_inv / half, // 2 3
+            self.far * self.near * range_inv, // 2 3
             N::zero(), // 3 3
         ])
     }
