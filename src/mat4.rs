@@ -13,13 +13,13 @@ pub struct Mat4<N> {
 }
 
 impl<N> Mat4<N> {
-    pub fn new(contents: [N; 16]) -> Self {
+    pub const fn new(contents: [N; 16]) -> Self {
         Self { contents }
     }
 }
 
 impl<N: Copy> Mat4<N> {
-    pub fn transpose(&self) -> Self {
+    pub const fn transpose(&self) -> Self {
         Self::new([
             self.contents[0],
             self.contents[4],
