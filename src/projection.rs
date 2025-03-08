@@ -124,17 +124,14 @@ impl<N: BaseFloat> PerspectiveProjection<N> {
             N::zero(),
             N::zero(),
             N::zero(),
-
             N::zero(),
             f,
             N::zero(),
             N::zero(),
-            
             N::zero(),
             N::zero(),
             self.far * range_inv,
             -N::one(),
-
             N::zero(),
             N::zero(),
             self.far * self.near * range_inv,
