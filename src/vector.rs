@@ -2,12 +2,22 @@ use std::ops::*;
 
 use crate::prelude::*;
 
+#[repr(C)]
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Vector3<N> {
     pub x: N,
     pub y: N,
     pub z: N,
 }
+
+#[cfg(feature="bytemuck")]
+pub use bytemuck::{Pod, Zeroable};
+
+#[cfg(feature="bytemuck")]
+unsafe impl<N : Pod + Zeroable> Zeroable for Vector3<N> {}
+
+#[cfg(feature="bytemuck")]
+unsafe impl<N : Pod + Zeroable> Pod for Vector3<N> {}
 
 pub const fn vec3<N>(x: N, y: N, z: N) -> Vector3<N> {
     Vector3::new(x, y, z)
