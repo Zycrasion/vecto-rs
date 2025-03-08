@@ -65,6 +65,29 @@ impl<N: BaseNumber> Mat4<N> {
         }
     }
 
+    pub fn scaling(scale : N) -> Mat4<N> {
+        Self {
+            contents: [
+                scale,
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                scale,
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                scale,
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::one(),
+            ],
+        }
+    }
+
     pub fn translation_matrix(v: Vector3<N>) -> Mat4<N> {
         Self {
             contents: [
