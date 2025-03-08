@@ -1,317 +1,377 @@
-use std::{ops::Mul, fmt::Display};
-use crate::Float;
-use crate::{vec::{Vector, Vector4, VectorTrait}, trig::to_radians};
+use std::ops::{Mul, Neg};
 
-//  https://en.wikipedia.org/wiki/Transformation_matrix#Examples_in_3D_computer_graphics
+use crate::{
+    angle::Angle,
+    types::{BaseFloat, BaseNumber},
+    vector::Vector3,
+};
 
-#[derive(Copy, Clone, Debug, Default, PartialEq, PartialOrd)]
-/// Matrice of order 4 x 4
-/// 
-/// Stored As Row Major
-pub struct Mat4
-{
-    contents : [Float; 4 * 4]
+#[repr(C)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+pub struct Mat4<N> {
+    contents: [N; 16],
 }
 
-impl Mat4
-{
-    /// Create a new Matrice
-    pub fn new() -> Self
-    {
-        Self
-        {
-            contents : [0.; 4 * 4]
-        }
+impl<N> Mat4<N> {
+    pub const fn new(contents: [N; 16]) -> Self {
+        Self { contents }
     }
+}
 
-    /// Create an identity Matrice
-    pub fn identity() -> Self
-    {
-        let mut a = Self::new();
-        for i in 0..=3
-        {
-            a.change(i, i, 1.);
-        }
-        a
-    }
-
-    /// Checks if any of the elements are not a number
-    pub fn is_nan(&self) -> bool
-    {
-        for ele in self.contents
-        {
-            if ele.is_nan()
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /// Transposes the matrice
-    /// Doesn't change Self
-    pub fn transpose(&self) -> Self
-    {
-        let mut b = Self::new();
-        for i in 0..16
-        {
-            let (x, y) = Self::coords(i);
-            b.change(x, y, self.get(y, x));
-        }
-        b
-    }
-
-    /// Scales matrix
-    pub fn scale(&mut self, vec : Vector4)
-    {
-        *self = *self * vec;
-    }
-    
-    /// Change element at x, y (0 indexed)
-    pub fn change(&mut self, x : usize, y : usize, val : Float)
-    {
-        let index = Self::index(x, y);
-        self.contents[index] = val;
-    }
-
-    /// Get element at x, y (0 indexed)
-    pub fn get(&self, x : usize, y : usize) -> Float
-    {
-        let index = Self::index(x, y);
-        self.contents[index]
-    }
-    
-    /// Get the index for an element located at x, y (0 indexed)
-    pub fn index(x : usize, y : usize) -> usize
-    {
-        assert!(x < 4);
-        assert!(y < 4);
-
-        x + y * 4
-    }
-
-    /// Get the x, y (ij) location of an index
-    pub fn coords(i : usize) -> (usize, usize)
-    {
-        (i % 4, i / 4)
-    }
-
-    /// Get a column
-    pub fn get_col(&self, x : usize) -> Vector4
-    {
-        Vector4::new4(self.get(x, 0),self.get(x, 1),self.get(x, 2),self.get(x, 3))
-    }
-
-    /// Get a row
-    pub fn get_row(&self, y : usize) -> Vector4
-    {
-        Vector4::new4(self.get(0, y),self.get(1, y),self.get(2, y),self.get(3, y))
-    }
-    
-    /// Get Matrice As Row Major
-    pub fn get_row_major(&self) -> Mat4
-    {
-        return self.clone()
-    }
-
-    /// Get Matrix As Column Major
-    pub fn get_column_major(&self) -> Mat4
-    {
-        return self.transpose()
-    }
-
-    /// From Array (row major)
-    pub const fn from_array(mat : [Float; 4 * 4]) -> Mat4
-    {
-        Mat4 { contents: mat }
-    }
-
-    /// From Vector4
-    pub fn from_vec4(vec : &Vector4) -> Mat4
-    {
-        let mut mat = Mat4::new();
-        mat.change(0, 0, vec.x);
-        mat.change(1, 1, vec.y);
-        mat.change(2, 2, vec.z);
-        mat.change(3, 3, vec.w);
-        mat
-    }
-
-    /// Create a rotation Matrix
-    /// 
-    /// http://www.songho.ca/opengl/gl_matrix.html
-    pub fn rotation_matrix(angle : Float, axis : Vector) -> Mat4
-    {
-        let s = angle.sin();
-        let c = angle.cos();
-        let c_1 = 1. - c;
-
-        let x = axis.x;
-        let y = axis.y;
-        let z = axis.z;
-
-        Mat4::from_array([
-            c_1 * x * x + c     , c_1 * x * y - s * z   , c_1 * x * z + s * y, 0.,
-            c_1 * x * y + s * z , c_1 * y * y + c       , c_1 * y * z - s * x, 0.,
-            c_1 * x * z - s * y , c_1 * y * z + s * x   , c_1 * z * z + c    , 0.,
-            0.                  ,                  0.,                  0.   , 1.,
+impl<N: Copy> Mat4<N> {
+    pub const fn transpose(&self) -> Self {
+        Self::new([
+            self.contents[0],
+            self.contents[4],
+            self.contents[8],
+            self.contents[12],
+            self.contents[1],
+            self.contents[5],
+            self.contents[9],
+            self.contents[13],
+            self.contents[2],
+            self.contents[6],
+            self.contents[10],
+            self.contents[14],
+            self.contents[3],
+            self.contents[7],
+            self.contents[11],
+            self.contents[15],
         ])
     }
-
-    /// Rotate current matrix
-    pub fn rotate(&mut self, angle : Float, axis : Vector)
-    {
-        *self = *self * Mat4::rotation_matrix(angle, axis);
-    }
-
-    /// Translate current matrix
-    pub fn translate(&mut self, pos : Vector)
-    {
-        *self = *self * Mat4::new_translation(pos);
-    }
-
-    /// Translation Matrix
-    pub fn new_translation(pos : Vector) -> Mat4
-    {
-        let transform = Mat4::from_array([
-            1., 0., 0., 0.,
-            0., 1., 0., 0.,
-            0., 0., 1., 0.,
-            pos.x, pos.y, pos.z, 1., 
-        ]);
-        
-        transform
-    }
-
-    /// Perspective Matrix
-    /// 
-    /// fov is in degrees
-    /// 
-    /// https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/building-basic-perspective-projection-matrix.html
-    pub fn new_perspective_matrix(width: Float, height: Float, fov : Float, near : Float, far : Float) -> Mat4
-    {
-        let aspect = width / height;
-        let z_range = near - far;
-        let tan_half_fov = to_radians(fov / 2.0).tan();
-        let mat = Mat4::from_array(
-            [
-                1.0 / (tan_half_fov * aspect), 0., 0., 0.,
-                0., 1. / tan_half_fov, 0., 0.,
-                0., 0., (-near - far) / z_range, 2. * far * near / z_range,
-                0., 0., 1., 0.
-            ]
-        );
-        mat
-    }
-
-    /// Orthographic Matrix
-    /// 
-    /// https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/orthographic-projection-matrix.html
-    pub fn new_orthographic_matrix(bottom : Float, top : Float, left : Float, right : Float, near : Float, far: Float) -> Mat4
-    {
-
-        let mat = Mat4::from_array(
-            [
-                2. / (right - left), 0., 0., 0.,
-                0., 2. / (top - bottom), 0., 0.,
-                0., 0., -2. / (far - near),  0.,
-                -(right + left) / (right - left), -(top + bottom) / (top - bottom), -(far + near) / (far - near), 1.
-            ]
-        );
-        mat
-    }
-
-
-    /// Creates a matrix looking at vector to from Vector from
-    pub fn look_at_rh(from : &Vector, to : &Vector, up : &Vector) -> Mat4
-    {
-        let forward = (*from - *to).normalized();
-        let right = Vector::cross(up, &forward).normalized();
-        let new_up = Vector::cross(&forward, &right);
-
-        Mat4::from_array(
-            [
-                right.x, right.y, right.z, 0.,
-                new_up.x, new_up.y, new_up.z, 0.,
-                forward.x, forward.y, forward.z, 0.,
-                from.x, from.y, from.z, 1.,
-            ]
-        )
-    }
-
-    /// get contents in array form
-    pub fn get_contents(&self) -> [Float; 4 * 4]
-    {
-        self.contents
-    }
-
-    /// to vec4
-    pub fn to_vec4(&self) -> Vector4
-    {
-        let mut vec4 = Vector4::default();
-        vec4.x = self.get_row(0).sum();
-        vec4.y = self.get_row(1).sum();
-        vec4.z = self.get_row(2).sum();
-        vec4.w = self.get_row(3).sum();
-        vec4
-    }
-
-    /// to vec3
-    pub fn to_vec3(&self) -> Vector
-    {
-        let mut vec3 = Vector::default();
-        vec3.x = self.get_row(0).sum();
-        vec3.y = self.get_row(1).sum();
-        vec3.z = self.get_row(2).sum();
-        vec3
-    }
 }
 
-
-impl Mul for Mat4
-{
-    type Output = Mat4;
-
-    fn mul(self, rhs: Self) -> Self::Output {
-        let mut c = Self::new();
-        for i in 0..16usize
-        {
-            let (col_index, row_index) = Self::coords(i);
-            
-            let row = self.get_row(row_index);
-            let col =  rhs.get_col(col_index);
-
-            let result = row * col;
-            let result = result.x + result.y + result.z + result.w;
-            c.change(col_index, row_index, result);
+impl<N: BaseNumber> Mat4<N> {
+    pub fn identity() -> Mat4<N> {
+        Self {
+            contents: [
+                N::one(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::one(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::one(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::one(),
+            ],
         }
-        return c;
+    }
+
+    pub fn uniform_scaling(scale: N) -> Mat4<N> {
+        Self {
+            contents: [
+                scale,
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                scale,
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                scale,
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::one(),
+            ],
+        }
+    }
+
+    pub fn scaling(scale: Vector3<N>) -> Mat4<N> {
+        Self {
+            contents: [
+                scale.x,
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                scale.y,
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                scale.z,
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::one(),
+            ],
+        }
+    }
+
+    pub fn translation_matrix(v: Vector3<N>) -> Mat4<N> {
+        Self {
+            contents: [
+                N::one(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::one(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::one(),
+                N::zero(),
+                v.x,
+                v.y,
+                v.z,
+                N::one(),
+            ],
+        }
+    }
+
+    pub fn translate(&mut self, v: Vector3<N>) -> &mut Mat4<N> {
+        *self = *self * Self::translation_matrix(v);
+        self
     }
 }
 
-impl Mul<Vector4> for Mat4
-{
-    type Output = Mat4;
+impl<N: BaseNumber + Neg<Output = N>> Mat4<N> {
+    pub fn inverse(&self) -> Option<Mat4<N>> {
+        // https://stackoverflow.com/a/1148405
+        let m = self.contents;
+        let mut inv = [N::zero(); 16];
 
-    fn mul(self, rhs: Vector4) -> Self::Output {
-        let rhs = Mat4::from_vec4(&rhs);
-        rhs * self
-    }   
+        inv[0] = m[5] * m[10] * m[15] - m[5] * m[11] * m[14] - m[9] * m[6] * m[15]
+            + m[9] * m[7] * m[14]
+            + m[13] * m[6] * m[11]
+            - m[13] * m[7] * m[10];
+        inv[4] = -m[4] * m[10] * m[15] + m[4] * m[11] * m[14] + m[8] * m[6] * m[15]
+            - m[8] * m[7] * m[14]
+            - m[12] * m[6] * m[11]
+            + m[12] * m[7] * m[10];
+
+        inv[8] = m[4] * m[9] * m[15] - m[4] * m[11] * m[13] - m[8] * m[5] * m[15]
+            + m[8] * m[7] * m[13]
+            + m[12] * m[5] * m[11]
+            - m[12] * m[7] * m[9];
+
+        inv[12] = -m[4] * m[9] * m[14] + m[4] * m[10] * m[13] + m[8] * m[5] * m[14]
+            - m[8] * m[6] * m[13]
+            - m[12] * m[5] * m[10]
+            + m[12] * m[6] * m[9];
+
+        inv[1] = -m[1] * m[10] * m[15] + m[1] * m[11] * m[14] + m[9] * m[2] * m[15]
+            - m[9] * m[3] * m[14]
+            - m[13] * m[2] * m[11]
+            + m[13] * m[3] * m[10];
+
+        inv[5] = m[0] * m[10] * m[15] - m[0] * m[11] * m[14] - m[8] * m[2] * m[15]
+            + m[8] * m[3] * m[14]
+            + m[12] * m[2] * m[11]
+            - m[12] * m[3] * m[10];
+
+        inv[9] = -m[0] * m[9] * m[15] + m[0] * m[11] * m[13] + m[8] * m[1] * m[15]
+            - m[8] * m[3] * m[13]
+            - m[12] * m[1] * m[11]
+            + m[12] * m[3] * m[9];
+
+        inv[13] = m[0] * m[9] * m[14] - m[0] * m[10] * m[13] - m[8] * m[1] * m[14]
+            + m[8] * m[2] * m[13]
+            + m[12] * m[1] * m[10]
+            - m[12] * m[2] * m[9];
+
+        inv[2] = m[1] * m[6] * m[15] - m[1] * m[7] * m[14] - m[5] * m[2] * m[15]
+            + m[5] * m[3] * m[14]
+            + m[13] * m[2] * m[7]
+            - m[13] * m[3] * m[6];
+
+        inv[6] = -m[0] * m[6] * m[15] + m[0] * m[7] * m[14] + m[4] * m[2] * m[15]
+            - m[4] * m[3] * m[14]
+            - m[12] * m[2] * m[7]
+            + m[12] * m[3] * m[6];
+
+        inv[10] = m[0] * m[5] * m[15] - m[0] * m[7] * m[13] - m[4] * m[1] * m[15]
+            + m[4] * m[3] * m[13]
+            + m[12] * m[1] * m[7]
+            - m[12] * m[3] * m[5];
+
+        inv[14] = -m[0] * m[5] * m[14] + m[0] * m[6] * m[13] + m[4] * m[1] * m[14]
+            - m[4] * m[2] * m[13]
+            - m[12] * m[1] * m[6]
+            + m[12] * m[2] * m[5];
+
+        inv[3] = -m[1] * m[6] * m[11] + m[1] * m[7] * m[10] + m[5] * m[2] * m[11]
+            - m[5] * m[3] * m[10]
+            - m[9] * m[2] * m[7]
+            + m[9] * m[3] * m[6];
+
+        inv[7] = m[0] * m[6] * m[11] - m[0] * m[7] * m[10] - m[4] * m[2] * m[11]
+            + m[4] * m[3] * m[10]
+            + m[8] * m[2] * m[7]
+            - m[8] * m[3] * m[6];
+
+        inv[11] = -m[0] * m[5] * m[11] + m[0] * m[7] * m[9] + m[4] * m[1] * m[11]
+            - m[4] * m[3] * m[9]
+            - m[8] * m[1] * m[7]
+            + m[8] * m[3] * m[5];
+
+        inv[15] = m[0] * m[5] * m[10] - m[0] * m[6] * m[9] - m[4] * m[1] * m[10]
+            + m[4] * m[2] * m[9]
+            + m[8] * m[1] * m[6]
+            - m[8] * m[2] * m[5];
+
+        let det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
+
+        if det == N::zero() {
+            return None;
+        }
+
+        let det = N::one() / det;
+
+        for i in 0..16 {
+            inv[i] *= det;
+        }
+
+        Some(Self::new(inv))
+    }
 }
 
-impl Display for Mat4
-{
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let mut i = 1;
-        for ele in self.contents
+impl<N: BaseFloat> Mat4<N> {
+    pub fn rotation_x(angle: Angle<N>) -> Self {
+        let radians = angle.as_radians();
+
+        let c = radians.cos();
+        let s = radians.sin();
+
+        Self {
+            contents: [
+                N::one(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                c,
+                s,
+                N::zero(),
+                N::zero(),
+                -s,
+                c,
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::one(),
+            ],
+        }
+    }
+
+    pub fn rotation_y(angle: Angle<N>) -> Self {
+        let radians = angle.as_radians();
+
+        let c = radians.cos();
+        let s = radians.sin();
+
+        Self {
+            contents: [
+                c,
+                N::zero(),
+                -s,
+                N::zero(),
+                N::zero(),
+                N::one(),
+                N::zero(),
+                N::zero(),
+                s,
+                N::zero(),
+                c,
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::one(),
+            ],
+        }
+    }
+
+    pub fn rotation_z(angle: Angle<N>) -> Self {
+        let radians = angle.as_radians();
+
+        let c = radians.cos();
+        let s = radians.sin();
+
+        Self {
+            contents: [
+                c,
+                s,
+                N::zero(),
+                N::zero(),
+                -s,
+                c,
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::one(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::one(),
+            ],
+        }
+    }
+}
+
+impl<N: BaseNumber> Mul<Mat4<N>> for Mat4<N> {
+    type Output = Mat4<N>;
+
+    fn mul(self, rhs: Mat4<N>) -> Self::Output {
+        let l = self.contents;
+        let r = rhs.contents;
+        let mut contents = [N::zero(); 16];
+
+        for i in 0..4
         {
-            write!(f, "{ele} ")?;
-            if i % 4 == 0
+            for j in 0..4
             {
-                writeln!(f, "")?;
+                // row * column
+                contents[i + j * 4] =   l[0 + j * 4] * r[i + 0 * 4] + 
+                                        l[1 + j * 4] * r[i + 1 * 4] + 
+                                        l[2 + j * 4] * r[i + 2 * 4] + 
+                                        l[3 + j * 4] * r[i + 3 * 4];
             }
-            i += 1;
         }
-        Ok(())
+
+        Mat4::new(contents)
+    }
+}
+
+#[cfg(feature = "bytemuck")]
+use bytemuck::{Pod, Zeroable};
+#[cfg(feature = "bytemuck")]
+unsafe impl<N: Pod + Zeroable> Pod for Mat4<N> {}
+#[cfg(feature = "bytemuck")]
+unsafe impl<N: Pod + Zeroable> Zeroable for Mat4<N> {}
+
+#[cfg(test)]
+mod mat4 {
+    use super::Mat4;
+
+    #[test]
+    fn identity_mul() {
+        let identity: Mat4<f32> = Mat4::identity();
+        let abc = Mat4::new([
+            0., 1., 5., 3., 10., 12., 19123., 16., -123., 11416534., 12312., 16., -123., 123.,
+            4687567., 123.,
+        ]);
+
+        assert_eq!(identity * abc, abc);
+        assert_eq!(abc * identity, abc);
+        assert_eq!(identity * identity, identity);
     }
 }
