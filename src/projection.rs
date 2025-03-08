@@ -120,22 +120,25 @@ impl<N: BaseFloat> PerspectiveProjection<N> {
         let f = (N::PI() * half - half *self.fovy.as_radians()).tan();
         let range_inv = N::one() / (self.near - self.far);
         Mat4::new([
-            f / self.aspect,
-            N::zero(),
-            N::zero(),
-            N::zero(),
-            N::zero(),
-            f,
-            N::zero(),
-            N::zero(),
-            N::zero(),
-            N::zero(),
-            self.far * range_inv,
-            -N::one(),
-            N::zero(),
-            N::zero(),
-            self.far * self.near * range_inv,
-            N::zero(),
+            f / self.aspect, // 0 0
+            N::zero(), // 1 0 
+            N::zero(), // 2 0 
+            N::zero(), // 3 0
+
+            N::zero(), // 0 1
+            f, // 1 1
+            N::zero(), // 2 1
+            N::zero(), // 3 1
+            
+            N::zero(), // 0 2
+            N::zero(), // 1 2
+            self.far * range_inv, // 2 2
+            -N::one(), // 3 2
+            
+            N::zero(), // 0 3
+            N::zero(), // 1 3
+            self.far * self.near * range_inv / half, // 2 3
+            N::zero(), // 3 3
         ])
     }
 }
