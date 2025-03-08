@@ -43,6 +43,25 @@ impl<N: Copy> Vector3<N> {
     }
 }
 
+impl Vector3<f32>
+{
+    pub const X : Vector3<f32> = Vector3::new(1., 0., 0.);
+    pub const Y : Vector3<f32> = Vector3::new(0., 1., 0.);
+    pub const Z : Vector3<f32> = Vector3::new(0., 0., 1.);
+    pub const ZERO : Vector3<f32> = Vector3::from_one(0.);
+    pub const ONE : Vector3<f32> = Vector3::from_one(1.);
+}
+
+impl Vector3<f64>
+{
+    pub const X : Vector3<f64> = Vector3::new(1., 0., 0.);
+    pub const Y : Vector3<f64> = Vector3::new(0., 1., 0.);
+    pub const Z : Vector3<f64> = Vector3::new(0., 0., 1.);
+    pub const ZERO : Vector3<f64> = Vector3::from_one(0.);
+    pub const ONE : Vector3<f64> = Vector3::from_one(1.);
+}
+
+
 impl<N: BaseNumber> Vector3<N> {
     pub fn magnitude_sq(&self) -> N {
         self.x * self.x + self.y * self.y + self.z * self.z
