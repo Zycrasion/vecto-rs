@@ -1,5 +1,5 @@
 use core::f32;
-use std::{fmt::Debug, ops::{AddAssign, DivAssign, MulAssign, Neg, RemAssign, SubAssign}};
+use std::{fmt::Debug, ops::{AddAssign, DivAssign, MulAssign, RemAssign, SubAssign}};
 
 use num_traits::{Float, FloatConst, Num, NumCast};
 
