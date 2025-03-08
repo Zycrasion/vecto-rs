@@ -1,27 +1,5 @@
 # Vecto-rs
-This is a math library where i will dump all my data types.
-
-## BRANCH INFORMATION
-In this branch, I'm going to fix everything I HATE about this library.
-
-Broken Matrices, Stupid vector trait, Float feature.
-
-Everything.
-
-## Current Status
-Stable. All breaking changes will change the Major version, however i don't think this should have any in the future
-
-I'm going to focus on the documentation and then i will think about publishing on cargo.
-
-## Tests
-Everything should be covered, if you find something that isn't covered, file an issue.
-
-## Current Contents:
--   Vector
--   Quadtree
--   AABB ( Axis Aligned Bounding Box )
--   Useful triangle functions
--   Lines
+Maths library aimed at wgpu.
 
 ## Using the Library
 This is not available on crates.io.
