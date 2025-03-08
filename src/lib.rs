@@ -9,4 +9,4 @@ macro_rules! import {
     };
 }
 
-import!(types vector);
+import!(types vector angle);
