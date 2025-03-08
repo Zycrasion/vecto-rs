@@ -335,25 +335,17 @@ impl<N: BaseNumber> Mul<Mat4<N>> for Mat4<N> {
         let r = rhs.contents;
         let mut contents = [N::zero(); 16];
 
-        contents[0] = l[0] * r[0] + l[4] * r[1] + l[8] * r[2] + l[12] * r[3];
-        contents[1] = l[1] * r[0] + l[5] * r[1] + l[9] * r[2] + l[13] * r[3];
-        contents[2] = l[2] * r[0] + l[6] * r[1] + l[10] * r[2] + l[14] * r[3];
-        contents[3] = l[3] * r[0] + l[7] * r[1] + l[11] * r[2] + l[15] * r[3];
-
-        contents[4] = l[0] * r[4] + l[4] * r[5] + l[8] * r[6] + l[12] * r[7];
-        contents[5] = l[1] * r[4] + l[5] * r[5] + l[9] * r[6] + l[13] * r[7];
-        contents[6] = l[2] * r[4] + l[6] * r[5] + l[10] * r[6] + l[14] * r[7];
-        contents[7] = l[3] * r[4] + l[7] * r[5] + l[11] * r[6] + l[15] * r[7];
-
-        contents[8] = l[0] * r[8] + l[4] * r[9] + l[8] * r[10] + l[12] * r[11];
-        contents[9] = l[1] * r[8] + l[5] * r[9] + l[9] * r[10] + l[13] * r[11];
-        contents[10] = l[2] * r[8] + l[6] * r[9] + l[10] * r[10] + l[14] * r[11];
-        contents[11] = l[3] * r[8] + l[7] * r[9] + l[11] * r[10] + l[15] * r[11];
-
-        contents[12] = l[0] * r[12] + l[4] * r[13] + l[8] * r[14] + l[12] * r[15];
-        contents[13] = l[1] * r[12] + l[5] * r[13] + l[9] * r[14] + l[13] * r[15];
-        contents[14] = l[2] * r[12] + l[6] * r[13] + l[10] * r[14] + l[14] * r[15];
-        contents[15] = l[3] * r[12] + l[7] * r[13] + l[11] * r[14] + l[15] * r[15];
+        for i in 0..4
+        {
+            for j in 0..4
+            {
+                // row * column
+                contents[i + j * 4] =   l[0 + j * 4] * r[i + 0 * 4] + 
+                                        l[1 + j * 4] * r[i + 1 * 4] + 
+                                        l[2 + j * 4] * r[i + 2 * 4] + 
+                                        l[3 + j * 4] * r[i + 3 * 4];
+            }
+        }
 
         Mat4::new(contents)
     }
