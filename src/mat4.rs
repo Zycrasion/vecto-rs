@@ -1,6 +1,7 @@
 use std::ops::{Mul, Neg};
 
 use crate::{
+    angle::Angle,
     types::{BaseFloat, BaseNumber},
     vector::Vector3,
 };
@@ -191,6 +192,92 @@ impl<N: BaseNumber + Neg<Output = N>> Mat4<N> {
         }
 
         Some(Self::new(inv))
+    }
+}
+
+impl<N: BaseFloat> Mat4<N> {
+    pub fn rotation_x(angle: Angle<N>) -> Self {
+        let radians = angle.as_radians();
+
+        let c = radians.cos();
+        let s = radians.sin();
+
+        Self {
+            contents: [
+                N::one(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                c,
+                s,
+                N::zero(),
+                N::zero(),
+                -s,
+                c,
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::one(),
+            ],
+        }
+    }
+
+    pub fn rotation_y(angle: Angle<N>) -> Self {
+        let radians = angle.as_radians();
+
+        let c = radians.cos();
+        let s = radians.sin();
+
+        Self {
+            contents: [
+                c,
+                N::zero(),
+                -s,
+                N::zero(),
+                N::zero(),
+                N::one(),
+                N::zero(),
+                N::zero(),
+                s,
+                N::zero(),
+                c,
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::one(),
+            ],
+        }
+    }
+
+    pub fn rotation_z(angle: Angle<N>) -> Self {
+        let radians = angle.as_radians();
+
+        let c = radians.cos();
+        let s = radians.sin();
+
+        Self {
+            contents: [
+                c,
+                s,
+                N::zero(),
+                N::zero(),
+                -s,
+                c,
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::one(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::one(),
+            ],
+        }
     }
 }
 
