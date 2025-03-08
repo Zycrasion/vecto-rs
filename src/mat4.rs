@@ -65,7 +65,7 @@ impl<N: BaseNumber> Mat4<N> {
         }
     }
 
-    pub fn scaling(scale : N) -> Mat4<N> {
+    pub fn uniform_scaling(scale : N) -> Mat4<N> {
         Self {
             contents: [
                 scale,
@@ -79,6 +79,29 @@ impl<N: BaseNumber> Mat4<N> {
                 N::zero(),
                 N::zero(),
                 scale,
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::one(),
+            ],
+        }
+    }
+
+    pub fn scaling(scale : Vector3<N>) -> Mat4<N> {
+        Self {
+            contents: [
+                scale.x,
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                scale.y,
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                scale.z,
                 N::zero(),
                 N::zero(),
                 N::zero(),
