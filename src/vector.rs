@@ -1,8 +1,8 @@
-use std::ops::{Div, DivAssign};
+use std::ops::*;
 
 use crate::prelude::*;
 
-#[derive(Debug, Default, Clone, Copy)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Vector3<N> {
     pub x: N,
     pub y: N,
@@ -37,6 +37,10 @@ impl<N: BaseNumber> Vector3<N> {
     pub fn magnitude_sq(&self) -> N {
         self.x * self.x + self.y * self.y + self.z * self.z
     }
+
+    pub fn dist_sq(&self, other: &Self) -> N {
+        (self - other).magnitude_sq()
+    }
 }
 
 impl<N: BaseFloat> Vector3<N> {
@@ -44,47 +48,82 @@ impl<N: BaseFloat> Vector3<N> {
         self.magnitude_sq().sqrt()
     }
 
+    pub fn dist(&self, other: &Self) -> N {
+        self.dist_sq(other).sqrt()
+    }
+
+    pub fn lerp(&self, other: &Self, t: N) -> Self {
+        Self::new(
+            t * (self.x + other.x),
+            t * (self.y + other.y),
+            t * (self.z + other.z),
+        )
+    }
+
     pub fn normalized(&self) -> Self {
         self / self.magnitude()
     }
+
+    pub fn dot(&self, other: &Self) -> N {
+        self.x * other.x + self.y * other.y + self.z * other.z
+    }
+
+    pub fn cross(&self, other: &Self) -> Self {
+        Self::new(
+            self.y * other.z - self.z * other.y,
+            self.z * other.x - self.x * other.z,
+            self.x * other.y - self.y * other.x,
+        )
+    }
+
+    pub fn angle_between(&self, other: &Self) -> Angle<N> {
+        let cross = self.cross(other);
+
+        Angle::Radians(N::atan2(cross.magnitude(), self.dot(other)) * cross.z.signum())
+    }
 }
 
-macro_rules! impl_scalar {
-    ($Op:ident<$Type:tt>) => {
-        impl<N: BaseNumber> Div<N> for &$Type<N> {
-            type Output = $Type<N>;
-
-            fn div(self, rhs: N) -> Self::Output {
-                vec3(self.x / rhs, self.y / rhs, self.z / rhs)
+macro_rules! impl_op {
+    ($Op:tt $func:tt $op:tt $ty:ty) => {
+        impl<N: BaseNumber> $Op<N> for $ty {
+            type Output = Vector3<N>;
+            fn $func(self, rhs: N) -> Self::Output {
+                vec3(self.x $op rhs, self.y $op rhs, self.z $op rhs)
             }
         }
-        impl<N: BaseNumber> Div<N> for $Type<N> {
-            type Output = $Type<N>;
-
-            fn div(self, rhs: N) -> Self::Output {
-                vec3(self.x / rhs, self.y / rhs, self.z / rhs)
-            }
-        }
-        impl<N: BaseNumber> DivAssign<N> for $Type<N> {
-            fn div_assign(&mut self, rhs: N) {
-                self.x /= rhs;
-                self.y /= rhs;
-                self.z /= rhs;
+        impl<N: BaseNumber> $Op<$ty> for $ty {
+            type Output = Vector3<N>;
+            fn $func(self, rhs: $ty) -> Self::Output {
+                vec3(self.x $op rhs.x, self.y $op rhs.y, self.z $op rhs.z)
             }
         }
     };
+    ($Op:tt $func:tt $op:tt) => {
+        impl_op!($Op $func $op Vector3<N>);
+        impl_op!($Op $func $op &Vector3<N>);
+    };
 }
 
-impl_scalar!(Div<Vector3>);
+impl_op!(Div div /);
+impl_op!(Mul mul *);
+impl_op!(Add add +);
+impl_op!(Sub sub -);
 
 #[cfg(test)]
 mod vector3 {
     use super::Vector3;
 
     const VECTOR3: Vector3<f32> = Vector3::from_tuple(&(0., 1., 2.));
+    const ZERO: Vector3<f32> = Vector3::from_tuple(&(0., 0., 0.));
 
     #[test]
     pub fn test_tuples() {
         assert_eq!(VECTOR3.to_tuple(), (0., 1., 2.));
+    }
+
+    #[test]
+    pub fn test_dist_sq() {
+        assert_eq!(VECTOR3.dist_sq(&ZERO), 5.);
+        assert_eq!(VECTOR3.dist(&ZERO), 5_f32.sqrt());
     }
 }
