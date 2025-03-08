@@ -7,6 +7,13 @@ pub enum Angle<N>
     Degrees(N)
 }
 
+impl<N : Default> Default for Angle<N>
+{
+    fn default() -> Self {
+        Self::Degrees(N::default())
+    }
+}
+
 impl<N : BaseFloat> Angle<N>
 {
     pub fn as_radians(&self) -> N
