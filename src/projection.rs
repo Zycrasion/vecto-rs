@@ -116,8 +116,8 @@ impl<N: BaseNumber> PerspectiveProjection<N> {
 
 impl<N: BaseFloat> PerspectiveProjection<N> {
     pub fn create_matrix(&self) -> Mat4<N> {
-        let two = cast(2).unwrap();
-        let f = (N::PI() / two - self.fovy.as_radians() / two).tan();
+        let half = cast(0.5).unwrap();
+        let f = (N::PI() * half - half *self.fovy.as_radians()).tan();
         let range_inv = N::one() / (self.near - self.far);
         Mat4::new([
             f / self.aspect,
