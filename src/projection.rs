@@ -2,7 +2,7 @@ use std::ops::Neg;
 
 use num_traits::{cast, NumCast};
 
-use crate::{mat4::Mat4, types::BaseNumber};
+use crate::{angle::Angle, mat4::Mat4, types::BaseNumber};
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct OrthographicProjection<N> {
@@ -85,4 +85,12 @@ impl<N: BaseNumber + NumCast + Neg<Output = N>> OrthographicProjection<N> {
             ]
         )
     }
+}
+
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+pub struct PerspectiveProjection<N> {
+    pub fovy : Angle<N>,
+    pub aspect : N,
+    pub near : N,
+    pub far : N,
 }
