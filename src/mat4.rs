@@ -1,6 +1,9 @@
 use std::ops::{Mul, Neg};
 
-use crate::types::{BaseFloat, BaseNumber};
+use crate::{
+    types::{BaseFloat, BaseNumber},
+    vector::Vector3,
+};
 
 #[repr(C)]
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
@@ -59,6 +62,34 @@ impl<N: BaseNumber> Mat4<N> {
                 N::one(),
             ],
         }
+    }
+
+    pub fn translation_matrix(v: Vector3<N>) -> Mat4<N> {
+        Self {
+            contents: [
+                N::one(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::one(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::zero(),
+                N::one(),
+                N::zero(),
+                v.x,
+                v.y,
+                v.z,
+                N::one(),
+            ],
+        }
+    }
+
+    pub fn translate(&mut self, v: Vector3<N>) -> &mut Mat4<N> {
+        *self = *self * Self::translation_matrix(v);
+        self
     }
 }
 
@@ -209,8 +240,11 @@ mod mat4 {
     #[test]
     fn identity_mul() {
         let identity: Mat4<f32> = Mat4::identity();
-        let abc = Mat4::new([ 0., 1., 5., 3., 10., 12., 19123., 16., -123., 11416534., 12312., 16., -123., 123., 4687567., 123., ]);
-    
+        let abc = Mat4::new([
+            0., 1., 5., 3., 10., 12., 19123., 16., -123., 11416534., 12312., 16., -123., 123.,
+            4687567., 123.,
+        ]);
+
         assert_eq!(identity * abc, abc);
         assert_eq!(abc * identity, abc);
         assert_eq!(identity * identity, identity);
