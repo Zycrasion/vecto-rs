@@ -1,5 +1,6 @@
 use crate::prelude::*;
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Angle<N>
 {
     Radians(N),
