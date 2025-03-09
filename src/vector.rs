@@ -67,6 +67,31 @@ impl<N: BaseNumber> Vector3<N> {
     pub fn dist_sq(&self, other: &Self) -> N {
         (self - other).magnitude_sq()
     }
+
+    pub fn zero() -> Vector3<N>
+    {
+        Vector3::from_one(N::zero())
+    }
+
+    pub fn one() -> Vector3<N>
+    {
+        Vector3::from_one(N::one())
+    }
+
+    pub fn x() -> Vector3<N>
+    {
+        Vector3::new(N::one(), N::zero(), N::zero())
+    }
+
+    pub fn y() -> Vector3<N>
+    {
+        Vector3::new(N::zero(), N::one(), N::zero())
+    }
+
+    pub fn z() -> Vector3<N>
+    {
+        Vector3::new(N::zero(), N::zero(), N::one())
+    }
 }
 
 impl<N: BaseFloat> Vector3<N> {
