@@ -1,4 +1,4 @@
-use std::ops::{Mul, Neg};
+use std::ops::{Mul, MulAssign, Neg};
 
 use crate::{
     angle::Angle,
@@ -335,19 +335,23 @@ impl<N: BaseNumber> Mul<Mat4<N>> for Mat4<N> {
         let r = rhs.contents;
         let mut contents = [N::zero(); 16];
 
-        for i in 0..4
-        {
-            for j in 0..4
-            {
+        for i in 0..4 {
+            for j in 0..4 {
                 // row * column
-                contents[i + j * 4] =   l[0 + j * 4] * r[i + 0 * 4] + 
-                                        l[1 + j * 4] * r[i + 1 * 4] + 
-                                        l[2 + j * 4] * r[i + 2 * 4] + 
-                                        l[3 + j * 4] * r[i + 3 * 4];
+                contents[i + j * 4] = l[0 + j * 4] * r[i + 0 * 4]
+                    + l[1 + j * 4] * r[i + 1 * 4]
+                    + l[2 + j * 4] * r[i + 2 * 4]
+                    + l[3 + j * 4] * r[i + 3 * 4];
             }
         }
 
         Mat4::new(contents)
+    }
+}
+
+impl<N: BaseNumber> MulAssign<Mat4<N>> for Mat4<N> {
+    fn mul_assign(&mut self, rhs: Mat4<N>) {
+        *self = *self * rhs;
     }
 }
 
